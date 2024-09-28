@@ -2,10 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Stack
 
-Next.js 14
-TypeScript
-PostCSS Modules
-Contentful
+Next.js 14 - TypeScript - PostCSS Modules - Contentful
 
 ## Getting Started
 
