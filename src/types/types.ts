@@ -6,9 +6,7 @@ export type AppContextType = {
 }
 
 export type Action = {
-    type: 
-        'SET_STATE' | 
-        'RESET_STATE'
+    type: 'SET_STATE'
     payload?: Partial<State>  | { id: string } | { key: string, value: string } | null
 }
 
@@ -22,8 +20,6 @@ export type ProductType = {
 export type DataState = {
     data?: any
 } | null | undefined | any
-
-
 
 export type ErrorState = string | null
 

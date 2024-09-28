@@ -5,11 +5,11 @@ const Home: React.FC = () => {
   const { state, dispatch } = useAppContext()
 
   return (
-      <main>
-        <h1>
-          hello world
-        </h1>
-      </main>
+    <main>
+      <h1>
+        hello world
+      </h1>
+    </main>
   )
 }
 

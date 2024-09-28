@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         canonical: "/",
     },
     icons: {
-        icon: "/icons/favicon.png",
+        icon: "/assets/icons/favicon.png",
     },
 }
 
@@ -30,7 +30,7 @@ const RootLayout: React.FC<{children?: React.ReactNode}> = ({children}) => {
         </AppProvider>
       </body>
     </html>
-  );
+  )
 }
 
 export default RootLayout
