@@ -2,6 +2,6 @@
 
 Next.js 14 - TypeScript - PostCSS Modules - Contentful
 
-## Init
+### Init
 
 28.09.2024
