@@ -1,0 +1,14 @@
+:root {
+  --color-black: rgb(0, 0, 0);
+  --color-darkgrey: #30313d;
+  --color-grey: rgb(187, 187, 187);
+  --color-lightgrey: #e6e6e6;
+  --color-white: rgb(255, 255, 255);
+  --color-background: rgb(251, 239, 240);
+
+  --font-body: 'Made Infinity Regular';
+  --font-heading: 'Made Infinity Medium';
+
+  --spacing-desktop: 3.125rem;
+  --spacing-mobile: 1rem;
+}
