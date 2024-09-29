@@ -2,7 +2,7 @@
 import { useAppContext } from '@/utils/context'
 
 const Home: React.FC = () => {
-  const { state, dispatch } = useAppContext()
+  const { state } = useAppContext()
 
   return (
     <main>

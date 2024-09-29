@@ -11,7 +11,7 @@ export type Action = {
 }
 
 export type DataState = {
-    data?: any
+    data?: string
 } | null | undefined | any
 
 export type ErrorState = string | null
