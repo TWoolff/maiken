@@ -1,11 +1,7 @@
 'use client'
 import { useAppContext } from '@/utils/context'
-import Toggle from '../formelements/toggle'
-
-const text = {
-  da: 'Maiken Vibe Bauer | Rum for Radikal Lytning',
-  en: 'Maiken Vibe Bauer | Room for Radical Listening'
-}
+import { TEXTS } from '@/constants/consts.texts'
+import Toggle from '@/components/formelements/toggle'
 
 const Header: React.FC = () => {
   const { state, dispatch } = useAppContext()
@@ -16,7 +12,7 @@ const Header: React.FC = () => {
 
   return ( 
     <header>
-      <h1>{text[state.language]}</h1>
+      <h1>{TEXTS.header[state.language]}</h1>
       <Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' />
     </header>
   )
