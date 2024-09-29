@@ -6,15 +6,8 @@ export type AppContextType = {
 }
 
 export type Action = {
-    type: 'SET_STATE'
+    type: 'SET_STATE' | 'TOGGLE_LANGUAGE'
     payload?: Partial<State>  | { id: string } | { key: string, value: string } | null
-}
-
-export type ProductType = {
-    data: {
-        id: string
-        slug?: string
-    }
 }
 
 export type DataState = {
@@ -27,6 +20,7 @@ export type State = {
     error: ErrorState | null
     data: DataState | null
     hasLoaded: boolean
+    language: 'da' | 'en'
 }
 
 

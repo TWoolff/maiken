@@ -6,6 +6,7 @@ const loadInitialState = (): State => ({
   error: null,
   data: null,
   hasLoaded: false,
+	language: 'da'
 })
 
 const initialState: State = loadInitialState()
@@ -14,6 +15,11 @@ const AppContext = createContext<AppContextType | undefined>(undefined)
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case 'TOGGLE_LANGUAGE':
+      return {
+        ...state,
+        language: state.language === 'da' ? 'en' : 'da'
+      }
     default:
       return state
   }
