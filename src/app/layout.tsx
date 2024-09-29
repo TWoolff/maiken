@@ -5,12 +5,12 @@ import '@/styles/index.css'
 export const metadata: Metadata = {
 	title: 'Maiken',
 	description: 'Sound Artist',
-	metadataBase: new URL("https://prettyugly.fashion/"),
+	metadataBase: new URL("https://maikenvibe.info/"),
     openGraph: {
         type: "website",
-        url: "https://prettyugly.fashion/",
-        title: "Maiken",
-        description: "Sound Artist",
+        url: "https://maikenvibe.info/",
+        title: "Maiken Vibe Bauer",
+        description: "Rum for Radikal Lytning",
         locale: "en_US",
     },
     alternates: {

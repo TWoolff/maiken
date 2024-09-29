@@ -1,5 +1,5 @@
 {
-  "name": "maiken",
+  "name": "maiken_vibe_bauer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "contentful": "11.0.3",
     "dotenv": "16.4.5",
     "framer-motion": "11.9.0",
+    "modern-normalize": "^3.0.1",
     "next": "14.2.13",
     "postcss": "8.4.47",
     "postcss-import": "16.1.0",
