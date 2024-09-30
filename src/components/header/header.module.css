@@ -1,0 +1,21 @@
+.header {
+  align-items: center;
+
+  & h1 {
+    grid-column: 1 / -1;
+    font-size: 2rem;
+
+    @media (min-width: 768px) {
+      grid-column: 1 / 11;
+    }
+  }
+}
+
+.headerToggle {
+  margin-top: 0.5rem;
+
+  @media (min-width: 768px) {
+    grid-column: 12 / -1;
+    margin-top: 0;
+  }
+}
