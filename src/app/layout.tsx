@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { AppProvider } from '../utils/context'
 import Header from '@/components/header/header'
-import Footer from '@/components/footer/footer'
 import '@/styles/index.css'
 
 export const metadata: Metadata = {
