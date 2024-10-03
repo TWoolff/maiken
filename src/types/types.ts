@@ -23,52 +23,63 @@ export type State = {
 	language: 'da' | 'en';
 };
 
+
+export type ContentfulTag = {
+  sys: {
+    id: string;
+    type: string;
+    linkType: string; 
+  };
+  name: string;
+};
+
+
 type RichTextNode = {
-	nodeType: string;
-	content: Array<{
-		nodeType: string;
-		value?: string;
-		content?: Array<RichTextNode>;
-	}>;
+  nodeType: string;
+  content: Array<{
+    nodeType: string;
+    value?: string;
+    content?: Array<RichTextNode>;
+  }>;
 };
 
 type ProjectEntry = {
-	metadata: {
-		tags: any[];
-	};
-	sys: {
-		id: string;
-		type: string;
-		createdAt: string;
-		updatedAt: string;
-		contentType: {
-			sys: {
-				id: string;
-				type: string;
-				linkType: string;
-			};
-		};
-		locale: string;
-	};
-	fields: {
-		title_dk: string;
-		title_eng: string;
-		slug: string;
-		description_dk: RichTextNode;
-		description_eng: RichTextNode;
-	};
+  metadata: {
+    tags: ContentfulTag[];
+  };
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    contentType: {
+      sys: {
+        id: string;
+        type: string;
+        linkType: string;
+      };
+    };
+    locale: string;
+  };
+  fields: {
+    title_dk: string;
+    title_eng: string;
+    slug: string;
+    description_dk: RichTextNode;
+    description_eng: RichTextNode;
+  };
 };
 
 export type HomeData = {
-	title: string;
-	slug: string;
-	projects: {
-		sys: {
-			id: string;
-			type: string;
-		};
-		fields: {
-			project: ProjectEntry[];
-		};
-	};
+  title: string;
+  slug: string;
+  projects: {
+    sys: {
+      id: string;
+      type: string;
+    };
+    fields: {
+      project: ProjectEntry[];
+    };
+  };
 };
