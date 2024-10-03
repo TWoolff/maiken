@@ -4,9 +4,7 @@ import { TEXTS } from '@/constants/consts.texts'
 import css from './footer.module.css'
 
 const Footer: React.FC = () => {
-  const { state, dispatch } = useAppContext()
-
-
+  const { state } = useAppContext()
 
   return ( 
     <footer className={`${css.footer} grid`}>
