@@ -19,6 +19,5 @@
 
   @media (min-width: 768px) {
     grid-column: 12 / -1;
-    margin-top: 0rem;
   }
 }

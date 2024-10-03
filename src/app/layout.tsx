@@ -30,7 +30,6 @@ const RootLayout: React.FC<{children?: React.ReactNode}> = ({children}) => {
         <AppProvider>
           <Header />
           {children}
-          <Footer />
         </AppProvider>
       </body>
     </html>
