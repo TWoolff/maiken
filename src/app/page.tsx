@@ -1,4 +1,7 @@
 'use client'
+
+import Video from "@/components/video/video"
+
 //import { useAppContext } from '@/utils/context'
 
 const Home: React.FC = () => {
@@ -6,6 +9,7 @@ const Home: React.FC = () => {
 
   return (
     <main>
+      <Video />
     </main>
   )
 }
