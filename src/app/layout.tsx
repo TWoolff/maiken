@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { AppProvider } from '../utils/context'
+import { AppProvider } from '../services/context'
 import Header from '@/components/header/header'
 import '@/styles/index.css'
 

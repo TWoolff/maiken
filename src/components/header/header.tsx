@@ -1,5 +1,5 @@
 'use client'
-import { useAppContext } from '@/utils/context'
+import { useAppContext } from '@/services/context'
 import { TEXTS } from '@/constants/consts.texts'
 import Toggle from '@/components/formelements/toggle'
 import css from './header.module.css'
