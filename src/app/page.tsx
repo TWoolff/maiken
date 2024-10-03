@@ -6,7 +6,7 @@ import Video from '@/components/video/video'
 
 const Home: React.FC = () => {
   const {state, dispatch} = useAppContext()
-  const [homeData, setHomeData] = useState<any>(null);
+  const [homeData, setHomeData] = useState<any | null>(null)
 
   useEffect(() => {
 		if (homeData) return;
@@ -19,15 +19,15 @@ const Home: React.FC = () => {
 			}
 		}
 		fetchData()
-	}, [])
+	}, [homeData])
 
   useEffect(() => {
 		if (homeData && state.data) {
 			dispatch({ type: 'SET_STATE', payload: { hasLoaded: true } })
 		}
-	}, [homeData, state.data])
+	}, [homeData, state.data, dispatch])
 
-  // console.log('homeData:', homeData)
+  //console.log('homeData:', homeData)
 
   return (
     <main>
