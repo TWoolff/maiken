@@ -1,10 +1,10 @@
 .header {
-  align-items: center;
+  align-items: start;
 
   & h1 {
     grid-column: 1 / -1;
     font-size: 2rem;
-    color: var(--color-white);
+    color: pink;
 
     @media (min-width: 768px) {
       grid-column: 1 / 11;
@@ -14,10 +14,11 @@
 
 .headerToggle {
   margin-top: 0.5rem;
-  color: var(--color-white);
+  color: pink;
+  justify-content: end;
 
   @media (min-width: 768px) {
     grid-column: 12 / -1;
-    margin-top: 0;
+    margin-top: 0rem;
   }
 }

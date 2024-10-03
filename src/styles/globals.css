@@ -37,6 +37,10 @@ img, video {
   height: auto;
 }
 
+main {
+  min-height: 83dvh;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

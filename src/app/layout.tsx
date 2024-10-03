@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { AppProvider } from '../utils/context'
 import '@/styles/index.css'
 import Header from '@/components/header/header'
+import Footer from '@/components/footer/header'
 
 export const metadata: Metadata = {
 	title: 'Maiken',
@@ -29,6 +30,7 @@ const RootLayout: React.FC<{children?: React.ReactNode}> = ({children}) => {
         <AppProvider>
           <Header />
           {children}
+          <Footer />
         </AppProvider>
       </body>
     </html>
