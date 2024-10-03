@@ -6,6 +6,7 @@ import Video from '@/components/video/video'
 
 const Home: React.FC = () => {
   const {state, dispatch} = useAppContext()
+  //@ts-ignore
   const [homeData, setHomeData] = useState<any | null>(null)
 
   useEffect(() => {
