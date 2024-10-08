@@ -12,7 +12,7 @@ export type Action = {
 
 export type DataState = {
     data?: HomeData
-} | null | undefined | any
+} | null | undefined | any;
 
 export type ErrorState = string | null;
 
@@ -22,6 +22,7 @@ export type State = {
 	hasLoaded: boolean;
 	language: 'da' | 'en';
 };
+
 
 
 export type ContentfulTag = {
@@ -70,16 +71,33 @@ export type ProjectEntry = {
   };
 };
 
+export type ProjectContent = {
+  sys: {
+    id: string;
+    type: string;
+  };
+  fields: {
+    id: string;
+    project: ProjectEntry[];
+  };
+};
+
+export type TextContent = {
+  sys: {
+    id: string;
+    type: string;
+  };
+  fields: {
+    id: string;
+    textDanish: RichTextNode;
+    textEnglish: RichTextNode;
+  };
+};
+
+export type ContentItem = ProjectContent | TextContent;
+
 export type HomeData = {
   title: string;
   slug: string;
-  projects: {
-    sys: {
-      id: string;
-      type: string;
-    };
-    fields: {
-      project: ProjectEntry[];
-    };
-  };
+  content: ContentItem[]; 
 };

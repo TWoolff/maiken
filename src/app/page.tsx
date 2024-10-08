@@ -2,7 +2,7 @@
 import { useEffect, useCallback } from 'react'
 import { useAppContext } from '@/services/context'
 import { getPage } from '@/services/contentful'
-import { HomeData } from '@/types/types'
+import { DataState, HomeData } from '@/types/types'
 import WorksMenu from '@/components/worksmenu/worksmenu'
 import Video from '@/components/video/video'
 
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
     try {
       const data = await getPage('home')
       const formattedData = JSON.parse(JSON.stringify(data.items[0].fields)) as HomeData
-      dispatch({ type: 'SET_STATE', payload: { data: formattedData, hasLoaded: true } })
+      dispatch({ type: 'SET_STATE', payload: { data: formattedData as DataState, hasLoaded: true } })
     } catch (error) {
       console.error('Error fetching home data:', error)
     }
