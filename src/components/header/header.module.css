@@ -4,7 +4,6 @@
   & h1 {
     grid-column: 1 / -1;
     font-size: 3rem;
-    color: pink;
 
     @media (min-width: 768px) {
       grid-column: 1 / 11;
@@ -14,7 +13,6 @@
 
 .headerToggle {
   margin-top: 0.5rem;
-  color: pink;
   justify-content: end;
 
   @media (min-width: 768px) {

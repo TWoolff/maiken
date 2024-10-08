@@ -10,15 +10,15 @@ export type Action = {
 	payload?: Partial<State> | { id: string } | { key: string; value: string } | null;
 };
 
-// export type DataState = {
-//     data?: string
-// } | null | undefined | any
+export type DataState = {
+    data?: HomeData
+} | null | undefined | any
 
 export type ErrorState = string | null;
 
 export type State = {
 	error: ErrorState | null;
-	data: null; //  | DataState
+	data: null | DataState;
 	hasLoaded: boolean;
 	language: 'da' | 'en';
 };
@@ -43,7 +43,7 @@ type RichTextNode = {
   }>;
 };
 
-type ProjectEntry = {
+export type ProjectEntry = {
   metadata: {
     tags: ContentfulTag[];
   };

@@ -20,6 +20,11 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         language: state.language === 'da' ? 'en' : 'da'
       }
+    case 'SET_STATE':
+      return {
+        ...state,
+        ...action.payload
+      }
     default:
       return state
   }

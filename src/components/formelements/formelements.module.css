@@ -108,7 +108,7 @@
 		width: 16px;
 		left: 4px;
 		bottom: 4px;
-		background-color: pink;
+		background-color: var(--color-white);
 		transition: .2s;
 		border-radius: 50%;
 	}

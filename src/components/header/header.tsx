@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   }
 
   return ( 
-    <header className={`${css.header} grid`}>
+    <header className={`${css.header} grid space`}>
       <h1>{TEXTS.header[state.language]}</h1>
       <Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' className={css.headerToggle} />
     </header>
