@@ -9,7 +9,7 @@ const isProjectContent = (item: ContentItem): item is ProjectContent => {
 
 const WorksMenu: React.FC = () => {
   const { state } = useAppContext()
-  const { data, language } = state
+  const { data } = state
   const projects = data?.content.find(isProjectContent)?.fields.project || []
 
   return (

@@ -2,8 +2,7 @@
 import React, { useEffect, useCallback } from 'react'
 import { useAppContext } from '@/services/context'
 import { getPage } from '@/services/contentful'
-import { ContentfulDocument, HomeData } from '@/types/types'
-import { getLocalizedField } from '@/utils/localization'
+import { HomeData } from '@/types/types'
 import Video from '@/components/video/video'
 
 const Home: React.FC = () => {
@@ -15,7 +14,6 @@ const Home: React.FC = () => {
     try {
       const data = await getPage('home')
       const formattedData = JSON.parse(JSON.stringify(data.items[0].fields)) as HomeData
-      console.log('Formatted Data:', formattedData)
       dispatch({ type: 'SET_STATE', payload: { data: formattedData, hasLoaded: true } })
     } catch (error) {
       console.error('Error fetching home data:', error)

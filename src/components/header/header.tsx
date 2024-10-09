@@ -1,6 +1,5 @@
 'use client'
 import { useAppContext } from '@/services/context'
-import { TEXTS } from '@/constants/consts.texts'
 import { ContentfulDocument } from '@/types/types'
 import { getLocalizedField } from '@/utils/localization'
 import Toggle from '@/components/formelements/toggle'
