@@ -3,19 +3,28 @@
 
   & h1 {
     grid-column: 1 / -1;
-    font-size: 3rem;
+    font-size: 0.9375rem;
+    font-weight: 400;
 
     @media (min-width: 768px) {
-      grid-column: 1 / 11;
+      grid-column: 1;
     }
   }
 }
 
-.headerToggle {
-  margin-top: 0.5rem;
-  justify-content: end;
+.intro {
+  grid-column: 1 / -1;
+  font-size: 1.25rem;
 
   @media (min-width: 768px) {
-    grid-column: 12 / -1;
+    grid-column: 9 / -1;
+  }
+}
+
+.headerToggle {
+  font-size: 0.75rem;
+
+  @media (min-width: 768px) {
+    grid-column: 7;
   }
 }

@@ -17,7 +17,7 @@ const WorksMenu: React.FC = () => {
       <nav>
         {projects.map((project: ProjectEntry) => (
           <Link href={`work/${project.fields.slug}`} key={project.sys.id}>
-            {language === 'da' ? project.fields.title_dk : project.fields.title_eng}
+            {/* {language === 'da' ? project.fields.title_dk : project.fields.title_eng} */}
           </Link>
         ))}
       </nav>

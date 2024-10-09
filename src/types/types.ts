@@ -23,8 +23,6 @@ export type State = {
 	language: 'da' | 'en';
 };
 
-
-
 export type ContentfulTag = {
   sys: {
     id: string;
@@ -34,14 +32,33 @@ export type ContentfulTag = {
   name: string;
 };
 
+export type LocalizedFields<T> = {
+  [locale: string]: T;
+};
 
-type RichTextNode = {
+export type RichTextDocument = {
   nodeType: string;
+  data: object;
   content: Array<{
     nodeType: string;
-    value?: string;
-    content?: Array<RichTextNode>;
+    data: object;
+    content: Array<{
+      nodeType: string;
+      value?: string;
+      data: object;
+    }>;
   }>;
+};
+
+export type TextContent = {
+  sys: {
+    id: string;
+    type: string;
+  };
+  fields: {
+    id: LocalizedFields<string>;
+    text: LocalizedFields<RichTextDocument>;
+  };
 };
 
 export type ProjectEntry = {
@@ -63,11 +80,10 @@ export type ProjectEntry = {
     locale: string;
   };
   fields: {
-    title_dk: string;
-    title_eng: string;
-    slug: string;
-    description_dk: RichTextNode;
-    description_eng: RichTextNode;
+    title: LocalizedFields<string>;
+    year: LocalizedFields<number>;
+    slug: LocalizedFields<string>;
+    content: LocalizedFields<RichTextDocument[]>;
   };
 };
 
@@ -77,27 +93,19 @@ export type ProjectContent = {
     type: string;
   };
   fields: {
-    id: string;
-    project: ProjectEntry[];
-  };
-};
-
-export type TextContent = {
-  sys: {
-    id: string;
-    type: string;
-  };
-  fields: {
-    id: string;
-    textDanish: RichTextNode;
-    textEnglish: RichTextNode;
+    id: LocalizedFields<string>;
+    project: LocalizedFields<ProjectEntry[]>;
   };
 };
 
 export type ContentItem = ProjectContent | TextContent;
 
 export type HomeData = {
-  title: string;
-  slug: string;
-  content: ContentItem[]; 
+  title: LocalizedFields<string>;
+  slug: LocalizedFields<string>;
+  content: LocalizedFields<ContentItem[]>;
 };
+
+export type ContentfulDocument = {
+  content: { content: { value: string }[] }[]
+} | undefined
