@@ -4,6 +4,7 @@ import { useAppContext } from '@/services/context'
 import { getPage } from '@/services/contentful'
 import { HomeData } from '@/types/types'
 import Video from '@/components/video/video'
+import WorksMenu from '@/components/worksmenu/worksmenu'
 
 const Home: React.FC = () => {
   const { state, dispatch } = useAppContext()
@@ -27,6 +28,7 @@ const Home: React.FC = () => {
   
   return (
     <main className='grid'>
+      <WorksMenu />
       <Video />
     </main>
   )

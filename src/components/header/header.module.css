@@ -4,7 +4,7 @@
   & h1 {
     grid-column: 1 / -1;
     font-size: 0.9375rem;
-    font-weight: 400;
+    font-weight: 800;
 
     @media (min-width: 768px) {
       grid-column: 1;

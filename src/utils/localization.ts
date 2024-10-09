@@ -5,3 +5,7 @@ export const getLocalizedField = <T,>(field: { [key: string]: T } | undefined, l
 export const isTextContent = (item: any): boolean => {
   return item?.fields?.text !== undefined
 }
+
+export const isProjectContent = (item: any): boolean => {
+  return item?.fields?.project !== undefined
+}

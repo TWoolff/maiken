@@ -19,7 +19,6 @@ const Header: React.FC = () => {
     : undefined
   const introTextContent: ContentfulDocument = getLocalizedField(introTextEntry?.fields?.text, language)
 
-
   return ( 
     <header className={`${css.header} grid space`}>
       <h1>MVB</h1>
@@ -32,9 +31,7 @@ const Header: React.FC = () => {
             </p>
           ))}
         </div>
-      ) : (
-        <p>No intro text found for the language: {language}</p>
-      )}
+      ) : null}
     </header>
   )
 }
