@@ -4,6 +4,7 @@ import { ContentfulDocument } from '@/types/types'
 import { getLocalizedField } from '@/utils/localization'
 import Toggle from '@/components/formelements/toggle'
 import css from './header.module.css'
+import Link from 'next/link'
 
 const Header: React.FC = () => {
   const { state, dispatch } = useAppContext()
@@ -22,16 +23,20 @@ const Header: React.FC = () => {
   return ( 
     <header className={`${css.header} grid space`}>
       <h1>MVB</h1>
-      <Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' className={css.headerToggle} />
+      <nav>
+        <Link href='/'>Work</Link>
+        <Link href='/contact'>Contact</Link>
+        <Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' className={css.headerToggle} /> 
+      </nav>
       {introTextContent ? (
-        <div className={css.intro}>
-          {introTextContent.content.map((paragraph, i) => (
-            <p key={i}>
-              {paragraph.content.map((textNode) => textNode.value).join(' ')}
-            </p>
-          ))}
-        </div>
-      ) : null}
+          <div className={css.intro}>
+            {introTextContent.content.map((paragraph, i) => (
+              <p key={i}>
+                {paragraph.content.map((textNode) => textNode.value).join(' ')}
+              </p>
+            ))}
+          </div>
+        ) : null}
     </header>
   )
 }

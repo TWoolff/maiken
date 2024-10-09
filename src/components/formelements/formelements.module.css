@@ -80,8 +80,8 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 24px;
+  width: 30px;
+  height: 14px;
 
 	& input {
 		opacity: 0;
@@ -104,10 +104,10 @@
 	&:before {
 		position: absolute;
 		content: "";
-		height: 16px;
-		width: 16px;
+		height: 8px;
+		width: 8px;
 		left: 4px;
-		bottom: 4px;
+		bottom: 3px;
 		background-color: var(--color-white);
 		transition: .2s;
 		border-radius: 50%;
@@ -119,5 +119,5 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(16px);
+  transform: translateX(14px);
 }

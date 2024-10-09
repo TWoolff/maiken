@@ -3,18 +3,30 @@
 
   & h1 {
     grid-column: 1 / -1;
-    font-size: 0.9375rem;
-    font-weight: 800;
+    font-size: 1rem;
+    font-weight: 400;
 
     @media (min-width: 768px) {
       grid-column: 1;
+    }
+  }
+
+  & nav {
+    grid-column: 1 / -1;
+
+    & a {
+      display: block;
+      font-weight: 400;
+    }
+
+    @media (min-width: 768px) {
+      grid-column: 7;
     }
   }
 }
 
 .intro {
   grid-column: 1 / -1;
-  font-size: 1.25rem;
 
   @media (min-width: 768px) {
     grid-column: 9 / -1;
@@ -22,9 +34,6 @@
 }
 
 .headerToggle {
+  margin-top: 0.5rem;
   font-size: 0.75rem;
-
-  @media (min-width: 768px) {
-    grid-column: 7;
-  }
 }
