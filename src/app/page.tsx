@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useCallback } from 'react'
 import { useAppContext } from '@/services/context'
-import { getPage } from '@/services/contentful'
+import { getAllPages, getPage } from '@/services/contentful'
 import { HomeData } from '@/types/types'
 import Video from '@/components/video/video'
 import WorksMenu from '@/components/worksmenu/worksmenu'
@@ -13,8 +13,8 @@ const Home: React.FC = () => {
   const fetchData = useCallback(async () => {
     if (state.data) return
     try {
-      const data = await getPage('home')
-      const formattedData = JSON.parse(JSON.stringify(data.items[0].fields)) as HomeData
+      const data = await getAllPages()
+      const formattedData = JSON.parse(JSON.stringify(data)) as HomeData
       dispatch({ type: 'SET_STATE', payload: { data: formattedData, hasLoaded: true } })
     } catch (error) {
       console.error('Error fetching home data:', error)
@@ -24,6 +24,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  console.log(state)
 
   
   return (
