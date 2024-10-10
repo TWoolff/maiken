@@ -3,7 +3,6 @@ import React, { useEffect, useCallback } from 'react'
 import { useAppContext } from '@/services/context'
 import { getAllPages } from '@/services/contentful'
 import { HomeData } from '@/types/types'
-import Video from '@/components/video/video'
 import WorksMenu from '@/components/worksmenu/worksmenu'
 
 const Work: React.FC = () => {
