@@ -7,7 +7,7 @@ import css from './worksmenu.module.css';
 
 const WorksMenu: React.FC = () => {
   const { state } = useAppContext();
-  const language = state.language === 'da' ? 'da-DK' : 'en-US';
+  const language = state.language;
   const pages = state.data;
   const projectEntry = findEntryById(pages, 'Work', 'en-US');
   const projects = projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') : [];

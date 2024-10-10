@@ -20,7 +20,7 @@ export type State = {
 	error: ErrorState | null;
 	data: null | DataState;
 	hasLoaded: boolean;
-	language: 'da' | 'en';
+	language: 'da-DK' | 'en-US';
 };
 
 export type ContentfulTag = {

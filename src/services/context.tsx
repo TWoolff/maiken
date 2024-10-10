@@ -6,7 +6,7 @@ const loadInitialState = (): State => ({
   error: null,
   data: null,
   hasLoaded: false,
-	language: 'da'
+	language: 'da-DK'
 })
 
 const initialState: State = loadInitialState()
@@ -18,7 +18,7 @@ const reducer = (state: State, action: Action): State => {
     case 'TOGGLE_LANGUAGE':
       return {
         ...state,
-        language: state.language === 'da' ? 'en' : 'da'
+        language: state.language === 'da-DK' ? 'en-US' : 'da-DK'
       }
     case 'SET_STATE':
       return {

@@ -1,6 +1,6 @@
 const NotFound: React.FC = () => {
   return ( 
-    <section>
+    <section className='grid space'>
       <h1>404</h1>
       <p>Page not found</p>
     </section>

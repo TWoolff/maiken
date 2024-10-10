@@ -22,8 +22,6 @@ const Work: React.FC = () => {
     fetchData()
   }, [fetchData])
 
-  console.log(state.data)
-
   return (
     <main className='grid'>
       <WorksMenu />

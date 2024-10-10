@@ -1,7 +1,7 @@
 'use client'
 import { useAppContext } from '@/services/context'
-import { TEXTS } from '@/constants/consts.texts'
 import css from './footer.module.css'
+import { TEXTS } from '@/constants/consts.texts'
 
 const Footer: React.FC = () => {
   const { state } = useAppContext()

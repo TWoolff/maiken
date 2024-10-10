@@ -10,8 +10,7 @@ const Contact: React.FC = () => {
   const [contactData, setContactData] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  const language = state.language === 'da' ? 'da-DK' : 'en-US';
+  const language = state.language;
 
   useEffect(() => {
     let contactPageData = state.data?.find((page: any) => page.fields?.slug?.['en-US'] === 'contact');
@@ -35,7 +34,6 @@ const Contact: React.FC = () => {
           setLoading(false);
         }
       };
-
       fetchData();
     }
   }, [state.data]);
