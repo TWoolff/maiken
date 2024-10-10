@@ -1,4 +1,3 @@
-// Contact.tsx
 'use client';
 import { useEffect, useState } from 'react';
 import { useAppContext } from '@/services/context';
@@ -15,23 +14,31 @@ const Contact: React.FC = () => {
   const language = state.language === 'da' ? 'da-DK' : 'en-US';
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const page = await getPage('contact');
-        if (page && page.items && page.items.length > 0) {
-          setContactData(page.items[0]);
-        }
-      } catch (err) {
-        setError('Error fetching contact page data');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    let contactPageData = state.data?.find((page: any) => page.fields?.slug?.['en-US'] === 'contact');
 
-    fetchData();
-  }, []);
+    if (contactPageData) {
+      setContactData(contactPageData);
+      setLoading(false);
+    } else {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const page = await getPage('contact');
+          if (page && page.items && page.items.length > 0) {
+            contactPageData = page.items[0];
+            setContactData(contactPageData);
+          }
+        } catch (err) {
+          setError('Error fetching contact page data');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [state.data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return null;
