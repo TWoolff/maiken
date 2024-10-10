@@ -12,8 +12,7 @@ const Work: React.FC = () => {
     if (state.data) return
     try {
       const data = await getAllPages()
-      const formattedData = JSON.parse(JSON.stringify(data)) as InitData
-      dispatch({ type: 'SET_STATE', payload: { data: formattedData, hasLoaded: true } })
+      dispatch({ type: 'SET_STATE', payload: { data: JSON.parse(JSON.stringify(data)) as InitData, hasLoaded: true } })
     } catch (error) {
       console.error('Error fetching home data:', error)
     }
@@ -22,6 +21,8 @@ const Work: React.FC = () => {
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  console.log(state.data)
 
   return (
     <main className='grid'>

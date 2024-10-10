@@ -21,8 +21,8 @@ const Header: React.FC = () => {
     <header className={`${css.header} grid space`}>
       <h1>MVB</h1>
       <nav>
-        <Link href='/'>Work</Link>
-        <Link href='/contact'>Contact</Link>
+        <Link href='/'>{state.language === 'da' ? 'Arbejde' : 'Work'}</Link>
+        <Link href='/contact'>{state.language === 'da' ? 'Kontakt' : 'Contact'}</Link>
         <Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' className={css.headerToggle} />
       </nav>
       {introTextContent ? (

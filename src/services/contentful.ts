@@ -6,6 +6,15 @@ const client = contentful.createClient({
   accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN ?? '',
 })
 
+export const getPage = async (slug: string) => {
+  const page = await client.withAllLocales.getEntries({
+    content_type: 'page',
+    include: 3,
+    'fields.slug': slug,
+  })
+  return page
+}
+
 export const getAllPages = async () => {
   try {
     const pages = await client.withAllLocales.getEntries({
