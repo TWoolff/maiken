@@ -25,9 +25,7 @@ img, video {
   height: auto;
 }
 
-main {
-  min-height: 100dvh;
-}
+
 
 .grid {
   display: grid;
@@ -40,7 +38,7 @@ main {
 }
 
 .space {
-  padding: 0.5rem var(--spacing-mobile);
+  padding: 1rem var(--spacing-mobile);
 
   @media (min-width: 768px) {
     padding: 2rem var(--spacing-desktop);

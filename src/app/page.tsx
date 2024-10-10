@@ -6,7 +6,7 @@ import { HomeData } from '@/types/types'
 import Video from '@/components/video/video'
 import WorksMenu from '@/components/worksmenu/worksmenu'
 
-const Home: React.FC = () => {
+const Work: React.FC = () => {
   const { state, dispatch } = useAppContext()
 
   const fetchData = useCallback(async () => {
@@ -27,9 +27,8 @@ const Home: React.FC = () => {
   return (
     <main className='grid'>
       <WorksMenu />
-      <Video />
     </main>
   )
 }
 
-export default Home
+export default Work
