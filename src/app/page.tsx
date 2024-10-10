@@ -2,7 +2,7 @@
 import React, { useEffect, useCallback } from 'react'
 import { useAppContext } from '@/services/context'
 import { getAllPages } from '@/services/contentful'
-import { HomeData } from '@/types/types'
+import { InitData } from '@/types/types'
 import WorksMenu from '@/components/worksmenu/worksmenu'
 
 const Work: React.FC = () => {
@@ -12,7 +12,7 @@ const Work: React.FC = () => {
     if (state.data) return
     try {
       const data = await getAllPages()
-      const formattedData = JSON.parse(JSON.stringify(data)) as HomeData
+      const formattedData = JSON.parse(JSON.stringify(data)) as InitData
       dispatch({ type: 'SET_STATE', payload: { data: formattedData, hasLoaded: true } })
     } catch (error) {
       console.error('Error fetching home data:', error)

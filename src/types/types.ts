@@ -11,7 +11,7 @@ export type Action = {
 };
 
 export type DataState = {
-    data?: HomeData
+    data?: InitData
 } | null | undefined | any;
 
 export type ErrorState = string | null;
@@ -100,7 +100,7 @@ export type ProjectContent = {
 
 export type ContentItem = ProjectContent | TextContent;
 
-export type HomeData = {
+export type InitData = {
   title: LocalizedFields<string>;
   slug: LocalizedFields<string>;
   content: LocalizedFields<ContentItem[]>;

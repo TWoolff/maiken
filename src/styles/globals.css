@@ -27,7 +27,7 @@ img, video {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 1rem;
 
   @media (min-width: 768px) {
@@ -36,9 +36,9 @@ img, video {
 }
 
 .space {
-  padding: 1rem var(--spacing-mobile);
+  padding: 1.5rem var(--spacing-mobile);
 
   @media (min-width: 768px) {
-    padding: 2rem var(--spacing-desktop);
+    padding: 3rem var(--spacing-desktop);
   }
 }
