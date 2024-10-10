@@ -1,14 +1,13 @@
 'use client'
 import React, { useEffect, useCallback } from 'react'
 import { useAppContext } from '@/services/context'
-import { getAllPages, getPage } from '@/services/contentful'
+import { getAllPages } from '@/services/contentful'
 import { HomeData } from '@/types/types'
 import Video from '@/components/video/video'
 import WorksMenu from '@/components/worksmenu/worksmenu'
 
 const Home: React.FC = () => {
   const { state, dispatch } = useAppContext()
-
 
   const fetchData = useCallback(async () => {
     if (state.data) return
@@ -25,9 +24,6 @@ const Home: React.FC = () => {
     fetchData()
   }, [fetchData])
 
-  console.log(state)
-
-  
   return (
     <main className='grid'>
       <WorksMenu />

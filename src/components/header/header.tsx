@@ -2,7 +2,8 @@
 import { useAppContext } from '@/services/context';
 import Toggle from '@/components/formelements/toggle';
 import Link from 'next/link';
-import { findEntryById, getLocalizedTextContent } from '@/utils/content';
+import { findEntryById } from '@/utils/content';
+import { getLocalizedTextContent } from '@/utils/localization';
 import css from './header.module.css';
 
 const Header: React.FC = () => {
