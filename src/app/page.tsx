@@ -4,6 +4,7 @@ import { useAppContext } from '@/services/context'
 import { getAllPages } from '@/services/contentful'
 import { InitData } from '@/types/types'
 import WorksMenu from '@/components/worksmenu/worksmenu'
+import Loader from '@/components/loader/loader'
 
 const Work: React.FC = () => {
   const { state, dispatch } = useAppContext()
@@ -24,7 +25,7 @@ const Work: React.FC = () => {
 
   return (
     <main className='grid'>
-      <WorksMenu />
+      {state.hasLoaded ? <WorksMenu /> : <Loader />}
     </main>
   )
 }

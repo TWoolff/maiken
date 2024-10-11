@@ -4,6 +4,7 @@ import { useAppContext } from '@/services/context';
 import { getPage } from '@/services/contentful';
 import { getLocalizedField } from '@/utils/localization';
 import css from './contact.module.css';
+import Loader from '@/components/loader/loader';
 
 const Contact: React.FC = () => {
   const { state } = useAppContext();
@@ -38,7 +39,7 @@ const Contact: React.FC = () => {
     }
   }, [state.data]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
   if (error) return null;
   if (!contactData) return null;
 
