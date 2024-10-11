@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useAppContext } from '@/services/context';
 import { getPage } from '@/services/contentful';
 import { getLocalizedField } from '@/utils/localization';
-import css from './contact.module.css';
 import Loader from '@/components/loader/loader';
+import css from './contact.module.css';
 
 const Contact: React.FC = () => {
   const { state } = useAppContext();
