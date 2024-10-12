@@ -26,7 +26,6 @@ const WorksMenu: React.FC = () => {
       <nav>
         {Array.isArray(projects) && projects.length > 0 ? (
           projects.map((project, i) => {
-            const projectTitle = getLocalizedField(project?.fields?.title, language) ?? 'Untitled Project';
             const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US');
             const width = calculateWidth(projects.length);
 
@@ -43,7 +42,6 @@ const WorksMenu: React.FC = () => {
       </nav>
       <h2>{getLocalizedField(hoveredProject?.fields?.title, language)}</h2>
       {hoveredProject && <p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>}
-
     </section>
   );
 };
