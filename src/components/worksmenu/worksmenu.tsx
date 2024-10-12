@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useAppContext } from '@/services/context';
 import { findEntryById } from '@/utils/content';
 import { getLocalizedField } from '@/utils/localization';
-import css from './worksmenu.module.css';
 import { ProjectEntry } from '@/types/types';
+import css from './worksmenu.module.css';
 
 const WorksMenu: React.FC = () => {
   const { state } = useAppContext();
@@ -18,8 +18,6 @@ const WorksMenu: React.FC = () => {
     const gap = 1;
     return `calc((100% - ${(projectCount - 1) * gap}rem) / ${projectCount})`;
   };
-
-  console.log(hoveredProject)
 
   return (
     <section className={`${css.worksmenu} grid space`}>
@@ -41,7 +39,11 @@ const WorksMenu: React.FC = () => {
         ) : null}
       </nav>
       <h2>{getLocalizedField(hoveredProject?.fields?.title, language)}</h2>
-      {hoveredProject && <p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>}
+      {hoveredProject && <>
+        <p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>
+        <p className={css.explore}>explore</p>
+      </>}
+
     </section>
   );
 };
