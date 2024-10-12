@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useAppContext } from '@/services/context';
 import { findEntryById } from '@/utils/content';
@@ -7,11 +7,11 @@ import { ProjectEntry } from '@/types/types';
 import css from './worksmenu.module.css';
 
 const WorksMenu: React.FC = () => {
-  const { state } = useAppContext();
+  const {state} = useAppContext();
   const language = state.language;
   const pages = state.data;
   const projectEntry = findEntryById(pages, 'Work', 'en-US');
-  const projects = projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') : [];
+  const projects: ProjectEntry[] = projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') ?? [] : [];
   const [hoveredProject, setHoveredProject] = useState<ProjectEntry | null>(null);
 
   const calculateWidth = (projectCount: number) => {
@@ -19,11 +19,17 @@ const WorksMenu: React.FC = () => {
     return `calc((100% - ${(projectCount - 1) * gap}rem) / ${projectCount})`;
   };
 
+  const sortedProjects = [...projects].sort((a, b) => {
+    const yearA = Number(a.fields.year?.['en-US']) || 0;
+    const yearB = Number(b.fields.year?.['en-US']) || 0;
+    return yearB - yearA;
+  });
+
   return (
     <section className={`${css.worksmenu} grid space`}>
       <nav>
         {Array.isArray(projects) && projects.length > 0 ? (
-          projects.map((project, i) => {
+          sortedProjects.map((project, i) => {
             const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US');
             const width = calculateWidth(projects.length);
 
