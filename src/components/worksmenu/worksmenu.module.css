@@ -1,9 +1,36 @@
 .worksmenu {
   grid-column: 1 / -1;
+  grid-template-rows: 1fr 1fr;
+  height: 100vh;
 
   & nav {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    align-self: center;
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+
+    @media (min-width: 768px) {
+      gap: 1rem;
+    }
+    
     & a {
       display: block;
+      aspect-ratio: 16 / 9;
+      background-color: blue;
     }
   }
+
+  & h2 {
+    grid-column: 1 / 5;
+    grid-row: 2;
+    align-self: start;
+  }
 }
+
+.year {
+  grid-column: 5 / 6;
+  grid-row: 2;
+}
+
