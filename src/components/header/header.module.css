@@ -1,5 +1,6 @@
 .header {
   align-items: start;
+  z-index: 9999;
 
   & h1 {
     grid-column: 1 / 3;
