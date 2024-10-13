@@ -32,13 +32,15 @@ const WorksMenu: React.FC = () => {
           sortedProjects.map((project, i) => {
             const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US');
             const width = calculateWidth(projects.length);
+            const isActive = hoveredProject === project ? css.active : '';
 
             return (
               <Link 
-                href={`/${projectSlug}`} 
-                key={i} style={{ width }} 
+                href={`work/${projectSlug}`} 
+                key={i} 
+                style={{ width }} 
+                className={isActive}
                 onMouseEnter={() => setHoveredProject(project)}
-                onMouseLeave={() => setHoveredProject(null)} 
               />
             );
           })
@@ -47,9 +49,8 @@ const WorksMenu: React.FC = () => {
       <h2>{getLocalizedField(hoveredProject?.fields?.title, language)}</h2>
       {hoveredProject && <>
         <p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>
-        <p className={css.explore}>explore</p>
+        <Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`} className={css.explore}>{language === 'da-DK' ? 'undersøg' : 'explore'}</Link>
       </>}
-
     </section>
   );
 };

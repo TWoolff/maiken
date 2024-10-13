@@ -38,6 +38,7 @@
   grid-column: 1 / 5;
   grid-row: 3;
   font-family: var(--font-heading);
+  text-transform: unset;
 
   &:before {
     content: '';
@@ -48,5 +49,9 @@
     background-color: var(--color-red);
     margin-right: 0.5rem;
   }
+}
+
+.active {
+  background-color: pink !important;
 }
 
