@@ -9,8 +9,7 @@ import css from './worksmenu.module.css';
 const WorksMenu: React.FC = () => {
   const {state} = useAppContext();
   const language = state.language;
-  const pages = state.data;
-  const projectEntry = findEntryById(pages, 'Work', 'en-US');
+  const projectEntry = findEntryById(state.data, 'Work', 'en-US');
   const projects: ProjectEntry[] = projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') ?? [] : [];
   const [hoveredProject, setHoveredProject] = useState<ProjectEntry | null>(null);
 
@@ -33,12 +32,13 @@ const WorksMenu: React.FC = () => {
             const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US');
             const width = calculateWidth(projects.length);
             const isActive = hoveredProject === project ? css.active : '';
+            const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url;
 
             return (
               <Link 
-                href={`work/${projectSlug}`} 
+                href={`/${projectSlug}`} 
                 key={i} 
-                style={{ width }} 
+                style={{width, backgroundImage: mainImgUrl ? `url(${mainImgUrl})` : 'none'}} 
                 className={isActive}
                 onMouseEnter={() => setHoveredProject(project)}
               />
