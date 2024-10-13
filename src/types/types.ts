@@ -1,4 +1,5 @@
 import { Dispatch } from 'react'
+import { EntrySkeletonType } from 'contentful'
 
 export type AppContextType = {
 	state: State
@@ -61,7 +62,7 @@ export type TextContent = {
   }
 }
 
-export type ProjectEntry = {
+export interface ProjectEntry extends EntrySkeletonType {
   metadata: {
     tags: ContentfulTag[]
   }
