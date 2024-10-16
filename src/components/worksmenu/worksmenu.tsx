@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAppContext } from '@/services/context';
 import { findEntryById } from '@/utils/content';
@@ -7,11 +7,21 @@ import { ProjectEntry } from '@/types/types';
 import css from './worksmenu.module.css';
 
 const WorksMenu: React.FC = () => {
-  const {state} = useAppContext();
+  const { state } = useAppContext();
   const language = state.language;
-  const projectEntry = findEntryById(state.data, 'Work', 'en-US');
+  const currentNav = state.currentNav;
+  
+  const projectEntry = findEntryById(state.data, currentNav, 'en-US');
   const projects: ProjectEntry[] = projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') ?? [] : [];
   const [hoveredProject, setHoveredProject] = useState<ProjectEntry | null>(null);
+
+  useEffect(() => {
+    if (projects.length > 0) {
+      setHoveredProject(projects[0]);
+    } else {
+      setHoveredProject(null);
+    }
+  }, [currentNav, projects]);
 
   const calculateWidth = (projectCount: number) => {
     const gap = 1;
@@ -23,6 +33,8 @@ const WorksMenu: React.FC = () => {
     const yearB = Number(b.fields.year?.['en-US']) || 0;
     return yearB - yearA;
   });
+
+  console.log(hoveredProject, 'hoveredProject')
 
   return (
     <section className={`${css.worksmenu} grid space`}>

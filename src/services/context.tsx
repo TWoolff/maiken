@@ -6,7 +6,8 @@ const loadInitialState = (): State => ({
   error: null,
   data: null,
   hasLoaded: false,
-	language: 'da-DK'
+	language: 'da-DK',
+  currentNav: 'Work'
 })
 
 const initialState: State = loadInitialState()
@@ -20,10 +21,12 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         language: state.language === 'da-DK' ? 'en-US' : 'da-DK'
       }
-    case 'SET_STATE':
-      return {
-        ...state,
-        ...action.payload
+      case 'SET_NAV':
+        return { ...state, currentNav: action.payload as string };
+      case 'SET_STATE':
+        return {
+          ...state,
+          ...action.payload
       }
     default:
       return state

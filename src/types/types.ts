@@ -6,10 +6,11 @@ export type AppContextType = {
 	dispatch: Dispatch<Action>
 }
 
-export type Action = {
-	type: 'SET_STATE' | 'TOGGLE_LANGUAGE'
-	payload?: Partial<State> | { id: string } | { key: string; value: string } | null
-}
+export type Action =
+  | { type: 'SET_STATE'; payload: Partial<State> }
+  | { type: 'TOGGLE_LANGUAGE'; payload: { language: 'da-DK' | 'en-US' } }
+  | { type: 'SET_NAV'; payload: string }
+  | { type: string; payload?: any }
 
 export type DataState = {
     data?: InitData
@@ -22,6 +23,7 @@ export type State = {
 	data: null | DataState
 	hasLoaded: boolean
 	language: 'da-DK' | 'en-US'
+  currentNav: string
 }
 
 export type ContentfulTag = {

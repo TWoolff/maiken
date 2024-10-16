@@ -17,11 +17,19 @@ const Header: React.FC = () => {
     dispatch({ type: 'TOGGLE_LANGUAGE', payload: { language: state.language === 'da-DK' ? 'en-US' : 'da-DK' } });
   };
 
+  const handleNavClick = (nav: string) => {
+    dispatch({ type: 'SET_NAV', payload: nav });
+  };
+
+  console.log('state', state); 
+
   return (
     <header className={`${css.header} grid space`}>
       <h1>MVB</h1>
       <nav>
-        <Link href='/'>{state.language === 'da-DK' ? 'Arbejde' : 'Work'}</Link>
+        <Link href='/' onClick={() => handleNavClick('Work')}>{state.language === 'da-DK' ? 'Arbejde' : 'Work'}</Link>
+        <Link href='/' onClick={() => handleNavClick('Collaborations')}>{state.language === 'da-DK' ? 'Samarbejder' : 'Collaborations'}</Link>
+        <Link href='/about'>{state.language === 'da-DK' ? 'Om' : 'About'}</Link>
         <Link href='/contact'>{state.language === 'da-DK' ? 'Kontakt' : 'Contact'}</Link>
         <Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' className={css.headerToggle} />
       </nav>
