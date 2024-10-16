@@ -48,7 +48,7 @@ const WorksMenu: React.FC = () => {
 
             return (
               <Link 
-                href={`/${projectSlug}`} 
+                href={`/work/${projectSlug}`} 
                 key={i} 
                 style={{width, backgroundImage: mainImgUrl ? `url(${mainImgUrl})` : 'none'}} 
                 className={isActive}

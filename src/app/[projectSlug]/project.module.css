@@ -1,9 +1,0 @@
-.project {
-  position: absolute;
-  top: 0;
-  grid-column: 1 / -1;
-  height: 100dvh;
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-}

@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={`${css.header} grid space`}>
-      <h1>MVB</h1>
+      <Link href='/' className={css.logo}>MVB</Link>
       <nav>
         <Link href='/' onClick={() => handleNavClick('Work')}>{state.language === 'da-DK' ? 'Arbejde' : 'Work'}</Link>
         <Link href='/' onClick={() => handleNavClick('Collaborations')}>{state.language === 'da-DK' ? 'Samarbejder' : 'Collaborations'}</Link>

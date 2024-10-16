@@ -1,0 +1,15 @@
+.project {
+  position: fixed;
+  top: 0;
+  left: 0;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+
+  & h1 {
+    grid-column: 1 / -1;
+    align-self: center;
+    justify-self: center;
+  }
+}
