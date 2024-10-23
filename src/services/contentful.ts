@@ -14,7 +14,7 @@ export const getPage = async (slug: string) => {
     include: 3,
     'fields.slug': slug,
   })
-  return page
+  return JSON.parse(JSON.stringify(page))
 }
 
 export const getAllPages = async () => {
@@ -23,7 +23,8 @@ export const getAllPages = async () => {
       content_type: 'page',
       include: 3,
     })
-    return pages.items 
+
+    return JSON.parse(JSON.stringify(pages.items))
   } catch (error) {
     console.error('Error fetching all pages:', error)
     throw error
