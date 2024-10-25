@@ -24,9 +24,19 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	useEffect(() => {
 		const adjustTextSize = () => {
 			if (svgRef.current && textRef.current) {
-				const svgWidth = svgRef.current.clientWidth
+				const isMobile = window.innerWidth < 768
+				const padding = isMobile ? `${1.5}rem` : `${3}rem`
+
+				const remToPx = (rem: string) => {
+					const baseFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize)
+					return parseFloat(rem) * baseFontSize
+				}
+
+				const paddingPx = remToPx(padding) * 2
+				const svgWidth = svgRef.current.clientWidth - paddingPx
 				const textWidth = textRef.current.getBBox().width
-				const scale = (svgWidth / textWidth) * 0.9 // 90% of container width
+				const scale = (svgWidth / textWidth) * 1
+
 				textRef.current.style.transform = `scale(${scale})`
 			}
 		}
@@ -41,7 +51,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [project])
 
-	if (!project) return 
+	if (!project) return
 
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries: Array<{ fields: { text: Record<string, { content: Array<{ content: Array<{ value: string; marks?: Array<{ type: string }> }> }> }> } }> =
@@ -77,7 +87,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 								</p>
 							))}
 						</article>
-				))}
+				  ))}
 		</section>
 	)
 }
