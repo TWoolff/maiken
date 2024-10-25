@@ -2,7 +2,6 @@
 import React, { useEffect, useCallback } from 'react'
 import { useAppContext } from '@/services/context'
 import { getAllPages } from '@/services/contentful'
-import { InitData } from '@/types/types'
 import WorksMenu from '@/components/worksmenu/worksmenu'
 import Loader from '@/components/loader/loader'
 
