@@ -6,6 +6,10 @@
 
   & article {
     grid-column: 1 / 5;
+
+    & p, & span {
+      font-size: 0.875rem;
+    }
   }
 }
 
