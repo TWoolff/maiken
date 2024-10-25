@@ -1,6 +1,6 @@
 .worksmenu {
   grid-column: 1 / -1;
-  grid-template-rows: 1fr 10rem 5rem 1fr;
+  grid-template-rows: 45dvh 10rem 5rem 1fr;
   height: 100vh;
 
   & nav {

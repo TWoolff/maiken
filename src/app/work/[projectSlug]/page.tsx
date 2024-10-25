@@ -26,7 +26,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 			if (svgRef.current && textRef.current) {
 				const svgWidth = svgRef.current.clientWidth
 				const textWidth = textRef.current.getBBox().width
-				const scale = svgWidth / textWidth * 0.9 // 90% of container width
+				const scale = (svgWidth / textWidth) * 0.9 // 90% of container width
 				textRef.current.style.transform = `scale(${scale})`
 			}
 		}
@@ -41,9 +41,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [project])
 
-	if (!project) {
-		return <div>Project not found</div>
-	}
+	if (!project) return 
 
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries: Array<{ fields: { text: Record<string, { content: Array<{ content: Array<{ value: string; marks?: Array<{ type: string }> }> }> }> } }> =
@@ -54,41 +52,32 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		<section className={`${css.project} grid space`}>
 			<div className={css.projectHeader} style={{ backgroundImage: mainImgUrl ? `url(${mainImgUrl})` : 'none' }} />
 			<div className={css.titleContainer}>
-				<svg ref={svgRef} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-					<text
-						ref={textRef}
-						x="50%"
-						y="50%"
-						dominantBaseline="middle"
-						textAnchor="middle"
-						className={css.titleText}
-					>
+				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
+					<text ref={textRef} x='50%' y='50%' dominantBaseline='middle' textAnchor='middle' className={css.titleText}>
 						{title}
 					</text>
 				</svg>
 			</div>
-			{contentEntries.length === 0 ? (
-				null
-			) : (
-				contentEntries.map((entry, i) => (
-					<article key={i} style={{ gridRow: i + 2 }}>
-						{entry.fields.text[language].content.map((paragraph, pIndex) => (
-							<p key={pIndex}>
-								{paragraph.content.map((textNode, tIndex) => {
-									const text = textNode.value
-									const isBold = textNode.marks?.some(mark => mark.type === 'bold')
-									const isItalic = textNode.marks?.some(mark => mark.type === 'italic')
-									return (
-										<span key={tIndex} style={{ fontWeight: isBold ? 'bold' : 'normal', fontStyle: isItalic ? 'italic' : 'normal' }}>
+			{contentEntries.length === 0
+				? null
+				: contentEntries.map((entry, i) => (
+						<article key={i} style={{ gridRow: i + 2 }}>
+							{entry.fields.text[language].content.map((paragraph, i) => (
+								<p key={i}>
+									{paragraph.content.map((textNode, tIndex) => {
+										const text = textNode.value
+										const isBold = textNode.marks?.some(mark => mark.type === 'bold')
+										const isItalic = textNode.marks?.some(mark => mark.type === 'italic')
+										return (
+											<span key={tIndex} style={{ fontWeight: isBold ? 'bold' : 'normal', fontStyle: isItalic ? 'italic' : 'normal' }}>
 												{text}
-										</span>
-									)
-								})}
-							</p>
-						))}
-					</article>
-				))
-			)}
+											</span>
+										)
+									})}
+								</p>
+							))}
+						</article>
+				))}
 		</section>
 	)
 }
