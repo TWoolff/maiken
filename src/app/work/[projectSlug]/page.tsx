@@ -49,7 +49,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		return () => {
 			window.removeEventListener('resize', adjustTextSize)
 		}
-	}, [project])
+	}, [project, language])
 
 	if (!project) return
 

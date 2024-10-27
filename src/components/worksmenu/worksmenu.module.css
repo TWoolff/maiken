@@ -10,6 +10,7 @@
     width: 100%;
     display: flex;
     gap: 0.5rem;
+    align-items: flex-start;
 
     @media (min-width: 768px) {
       gap: 1rem;
@@ -17,10 +18,18 @@
     
     & a {
       display: block;
-      aspect-ratio: 16 / 9;
+      height: 4rem;
       background-color: blue;
-      background-size: cover;
+      background-size: center;
       background-position: center;
+      transition: height 0.2s ease-in-out, margin-top 0.2s ease-in-out;
+      position: relative;
+      margin-top: 1.5rem;
+    }
+
+    & a:hover {
+      height: 9rem;
+      margin-top: 0;
     }
   }
 }
@@ -56,4 +65,3 @@
 .active {
   background-color: pink !important;
 }
-
