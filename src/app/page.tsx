@@ -23,6 +23,8 @@ const Work: React.FC = () => {
     fetchData()
   }, [fetchData])
 
+  console.log(state)
+
   return (
     <main className='grid'>
       {state.hasLoaded ? <WorksMenu /> : <Loader />}

@@ -24,7 +24,7 @@ const Header: React.FC = () => {
 	return (
 		<header className={`${css.header} grid space`}>
 			<Link href='/' className={css.logo}>
-				MVB
+				MAIKEN VIBE BAUER
 			</Link>
 			<nav>
 				<Link href='/' onClick={() => handleNavClick('Work')}>

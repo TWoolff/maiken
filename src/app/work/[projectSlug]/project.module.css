@@ -21,9 +21,9 @@
   top: 0;
   left: 0;
   inset: 0;
-  max-height: 100vh;
+  height: 100%;
   background-size: cover;
-  background-position: center;
+  background-position: top center;
   z-index: -1;
 }
 
@@ -45,4 +45,8 @@
   transform-origin: center;
   fill: var(--color-black);
   text-transform: uppercase;
+}
+
+.videoContainer {
+  grid-column: 1 / -1 !important;
 }
