@@ -1,6 +1,5 @@
 .project {
   display: grid;
-  grid-template-rows: 100vh auto;
   gap: 2rem; 
   width: 100vw;
 
@@ -24,6 +23,12 @@
   height: 100%;
   background-size: cover;
   background-position: top center;
+  z-index: -1;
+}
+
+.mainImg {
+  grid-column: 1 / -1;
+  grid-row: 1;
   z-index: -1;
 }
 

@@ -63,7 +63,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		// Text content rendering
 		if (entry.sys.contentType.sys.id === 'text' && entry.fields.text) {
 			return (
-				<article key={index} style={{ gridRow: index + 2 }}>
+				<article key={index} className='space' style={{ gridRow: index + 2 }}>
 					{entry.fields.text[language].content.map((paragraph: any, i: number) => (
 						<p key={i}>
 							{paragraph.content.map((textNode: any, tIndex: number) => {
@@ -131,8 +131,8 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	}
 
 	return (
-		<section className={`${css.project} grid space`}>
-			<div className={css.projectHeader} style={{ backgroundImage: mainImgUrl ? `url(https:${mainImgUrl})` : 'none' }} />
+		<section className={`${css.project} grid`}>
+			{mainImgUrl && <img src={`https:${mainImgUrl}`} alt={title} className={css.mainImg} />}
 			<div className={css.titleContainer}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
 					<text ref={textRef} x='50%' y='50%' dominantBaseline='middle' textAnchor='middle' className={css.titleText}>

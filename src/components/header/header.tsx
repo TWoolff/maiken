@@ -28,7 +28,7 @@ const Header: React.FC = () => {
 			</Link>
 			<nav>
 				<Link href='/' onClick={() => handleNavClick('Work')}>
-					{state.language === 'da-DK' ? 'Arbejde' : 'Work'}
+					{state.language === 'da-DK' ? 'Arbejder' : 'Work'}
 				</Link>
 				<Link href='/' onClick={() => handleNavClick('Collaborations')}>
 					{state.language === 'da-DK' ? 'Samarbejder' : 'Collaborations'}
