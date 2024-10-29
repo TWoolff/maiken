@@ -4,6 +4,9 @@ import { findEntryBySlug } from '@/services/contentful'
 import { useAppContext } from '@/services/context'
 import { getLocalizedField } from '@/utils/localization'
 import css from './project.module.css'
+import TextContent from '@/components/content/TextContent'
+import ImageContent from '@/components/content/ImageContent'
+import VideoContent from '@/components/content/VideoContent'
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { state } = useAppContext()
@@ -60,74 +63,16 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	console.log(project)
 
 	const renderContent = (entry: any, index: number) => {
-		// Text content rendering
-		if (entry.sys.contentType.sys.id === 'text' && entry.fields.text) {
-			return (
-				<article key={index} className='space' style={{ gridRow: index + 2 }}>
-					{entry.fields.text[language].content.map((paragraph: any, i: number) => (
-						<p key={i}>
-							{paragraph.content.map((textNode: any, tIndex: number) => {
-								const text = textNode.value
-								const isBold = textNode.marks?.some((mark: any) => mark.type === 'bold')
-								const isItalic = textNode.marks?.some((mark: any) => mark.type === 'italic')
-								return (
-									<span
-										key={tIndex}
-										style={{
-											fontWeight: isBold ? 'bold' : 'normal',
-											fontStyle: isItalic ? 'italic' : 'normal',
-										}}
-									>
-										{text}
-									</span>
-								)
-							})}
-						</p>
-					))}
-				</article>
-			)
+		switch (entry.sys.contentType.sys.id) {
+			case 'text':
+				return <TextContent key={index} content={entry} language={language} index={index} />
+			case 'image':
+				return <ImageContent key={index} content={entry} index={index} />
+			case 'video':
+				return <VideoContent key={index} content={entry} index={index} />
+			default:
+				return null
 		}
-
-		// Image content rendering
-		if (entry.sys.contentType.sys.id === 'image' && entry.fields.image) {
-			const imageUrl = entry.fields.image['en-US']?.fields?.file?.['en-US']?.url
-			if (imageUrl) {
-				return (
-					<article key={index} style={{ gridRow: index + 2 }}>
-						<img 
-							src={`https:${imageUrl}`} 
-							alt={entry.fields.image['en-US']?.fields?.title?.['en-US'] || ''} 
-							className={css.contentImage} 
-						/>
-					</article>
-				)
-			}
-		}
-
-		// Video content rendering
-		if (entry.sys.contentType.sys.id === 'video' && entry.fields.video) {
-			const videoUrl = entry.fields.video['en-US']?.fields?.file?.['en-US']?.url
-			const videoType = entry.fields.video['en-US']?.fields?.file?.['en-US']?.contentType
-			if (videoUrl) {
-				return (
-					<article key={index} className={css.videoContainer} style={{ gridRow: index + 2 }}>
-						<video 
-							controls
-							className={css.contentVideo}
-							playsInline
-						>
-							<source 
-								src={`https:${videoUrl}`} 
-								type={videoType} 
-							/>
-							Your browser does not support the video tag.
-						</video>
-					</article>
-				)
-			}
-		}
-
-		return null
 	}
 
 	return (

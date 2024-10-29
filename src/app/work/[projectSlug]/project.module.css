@@ -51,7 +51,3 @@
   fill: var(--color-black);
   text-transform: uppercase;
 }
-
-.videoContainer {
-  grid-column: 1 / -1 !important;
-}
