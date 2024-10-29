@@ -62,17 +62,49 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 
 	console.log(project)
 
-	const renderContent = (entry: any, index: number) => {
+	const renderContent = (entry: any, index: number, entries: any[]) => {
 		switch (entry.sys.contentType.sys.id) {
 			case 'text':
 				return <TextContent key={index} content={entry} language={language} index={index} />
-			case 'image':
-				return <ImageContent key={index} content={entry} index={index} />
+			case 'image': {
+				const imageEntries = entries.filter(e => e.sys.contentType.sys.id === 'image')
+				const imageIndex = imageEntries.findIndex(e => e.sys.id === entry.sys.id)
+				
+				if (imageIndex % 2 === 0) {
+					const nextImage = imageEntries[imageIndex + 1]
+					return (
+						<div key={index} className={css.imageRow} style={{ gridRow: index + 2 }}>
+							<article className={css.imageWrapper} style={{ gridColumn: getFirstImageColumn(imageIndex) }}>
+								<ImageContent content={entry} index={index} />
+							</article>
+							{nextImage && 
+								<article className={css.imageWrapper} style={{ gridColumn: getSecondImageColumn(imageIndex) }}>
+									<ImageContent 
+										content={nextImage} 
+										index={entries.findIndex(e => e.sys.id === nextImage.sys.id)} 
+									/>
+								</article>
+							}
+						</div>
+					)
+				}
+				return null
+			}
 			case 'video':
 				return <VideoContent key={index} content={entry} index={index} />
 			default:
 				return null
 		}
+	}
+
+	// Helper functions to determine column positions
+	const getFirstImageColumn = (pairIndex: number) => {
+		// pairIndex represents the pair number (0, 1, 2, etc.)
+		return pairIndex % 2 === 0 ? '1 / 5' : '1 / 8'
+	}
+
+	const getSecondImageColumn = (pairIndex: number) => {
+		return pairIndex % 2 === 0 ? '7 / -1' : '9 / -1'
 	}
 
 	return (
@@ -85,7 +117,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					</text>
 				</svg>
 			</div>
-			{contentEntries.length === 0 ? null : contentEntries.map((entry: any, i: number) => renderContent(entry, i))}
+			{contentEntries.length === 0 ? null : contentEntries.map((entry: any, i: number) => renderContent(entry, i, contentEntries))}
 		</section>
 	)
 }
