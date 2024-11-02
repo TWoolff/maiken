@@ -3,10 +3,10 @@ import { useEffect, useState, useRef } from 'react'
 import { findEntryBySlug } from '@/services/contentful'
 import { useAppContext } from '@/services/context'
 import { getLocalizedField } from '@/utils/localization'
-import css from './project.module.css'
 import TextContent from '@/components/content/TextContent'
 import ImageContent from '@/components/content/ImageContent'
 import VideoContent from '@/components/content/VideoContent'
+import css from './project.module.css'
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { state } = useAppContext()
@@ -69,22 +69,19 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 			case 'image': {
 				const imageEntries = entries.filter(e => e.sys.contentType.sys.id === 'image')
 				const imageIndex = imageEntries.findIndex(e => e.sys.id === entry.sys.id)
-				
+
 				if (imageIndex % 2 === 0) {
 					const nextImage = imageEntries[imageIndex + 1]
 					return (
 						<div key={index} className={`${css.imageRow} space grid`} style={{ gridRow: index + 2 }}>
 							<article className={css.imageWrapper} style={{ gridColumn: getFirstImageColumn(imageIndex) }}>
-								<ImageContent content={entry} index={index} />
+								<ImageContent content={entry} />
 							</article>
-							{nextImage && 
+							{nextImage && (
 								<article className={css.imageWrapper} style={{ gridColumn: getSecondImageColumn(imageIndex) }}>
-									<ImageContent 
-										content={nextImage} 
-										index={entries.findIndex(e => e.sys.id === nextImage.sys.id)} 
-									/>
+									<ImageContent content={nextImage} />
 								</article>
-							}
+							)}
 						</div>
 					)
 				}
@@ -97,9 +94,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}
 
-	// Helper functions to determine column positions
 	const getFirstImageColumn = (pairIndex: number) => {
-		// pairIndex represents the pair number (0, 1, 2, etc.)
 		return pairIndex % 2 === 0 ? '1 / 5' : '1 / 8'
 	}
 
