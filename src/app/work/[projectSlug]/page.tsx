@@ -73,7 +73,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 				if (imageIndex % 2 === 0) {
 					const nextImage = imageEntries[imageIndex + 1]
 					return (
-						<div key={index} className={css.imageRow} style={{ gridRow: index + 2 }}>
+						<div key={index} className={`${css.imageRow} space grid`} style={{ gridRow: index + 2 }}>
 							<article className={css.imageWrapper} style={{ gridColumn: getFirstImageColumn(imageIndex) }}>
 								<ImageContent content={entry} index={index} />
 							</article>
@@ -104,7 +104,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	}
 
 	const getSecondImageColumn = (pairIndex: number) => {
-		return pairIndex % 2 === 0 ? '7 / -1' : '9 / -1'
+		return pairIndex % 2 === 0 ? '6 / -1' : '9 / -1'
 	}
 
 	return (

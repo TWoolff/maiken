@@ -12,18 +12,14 @@ const ImageContent = ({ content, index, isDouble = false }: ImageContentProps) =
 
 	if (!imageUrl) return null
 
-	console.log(imageUrl)
 	return (
-		<article 
-			className={`${css.imageContainer} ${isDouble ? css.doubleImage : ''} space`} 
-			style={{ gridRow: isDouble ? undefined : index + 2 }}
-		>
-			<img 
-				src={`https:${imageUrl}`} 
-				alt={imageTitle} 
-				className={css.contentImage} 
-			/>
-		</article>
+		<div 
+			className={css.imageContainer}
+			style={{ 
+				backgroundImage: `url(https:${imageUrl})`,
+			}}
+			aria-label={imageTitle}
+		/>
 	)
 }
 
