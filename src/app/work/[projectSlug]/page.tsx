@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
+import Image from 'next/image'
 import { findEntryBySlug } from '@/services/contentful'
 import { useAppContext } from '@/services/context'
 import { getLocalizedField } from '@/utils/localization'
@@ -54,7 +55,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [project, language])
 
-	if (!project) return
+	if (!project) return null
 
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries = project.fields.content?.['en-US'] || []
@@ -102,7 +103,16 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 
 	return (
 		<section className={`${css.project} grid`}>
-			{mainImgUrl && <img src={`https:${mainImgUrl}`} alt={title} className={css.mainImg} />}
+			{mainImgUrl && (
+				<Image 
+					src={`https:${mainImgUrl}`} 
+					alt={title} 
+					className={css.mainImg} 
+					layout="responsive"
+					width={800}
+					height={600}
+				/>
+			)}
 			<div className={css.titleContainer}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
 					<text ref={textRef} x='50%' y='50%' dominantBaseline='middle' textAnchor='middle' className={css.titleText}>

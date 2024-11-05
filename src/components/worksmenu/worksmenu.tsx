@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import { useAppContext } from '@/services/context'
 import { findEntryById } from '@/utils/content'
@@ -13,7 +13,19 @@ const WorksMenu: React.FC = () => {
 	const navRef = useRef<HTMLElement>(null)
 	const sectionRef = useRef<HTMLElement>(null)
 	const projectEntry = findEntryById(state.data, currentNav, 'en-US')
-	const projects: ProjectEntry[] = projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') ?? [] : []
+
+	const projects: ProjectEntry[] = useMemo(() => {
+		return projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') ?? [] : []
+	}, [projectEntry])
+
+	const sortedProjects = useMemo(() => {
+		return [...projects].sort((a, b) => {
+			const yearA = Number(a.fields.year?.['en-US']) || 0
+			const yearB = Number(b.fields.year?.['en-US']) || 0
+			return yearB - yearA
+		})
+	}, [projects])
+
 	const [hoveredProject, setHoveredProject] = useState<ProjectEntry | null>(null)
 
 	useEffect(() => {
@@ -22,7 +34,7 @@ const WorksMenu: React.FC = () => {
 		} else {
 			setHoveredProject(null)
 		}
-	}, [currentNav, projects])
+	}, [projects])
 
 	useEffect(() => {
 		const handleWheel = (e: WheelEvent) => {
@@ -44,17 +56,8 @@ const WorksMenu: React.FC = () => {
 		}
 	}, [])
 
-	const sortedProjects = [...projects].sort((a, b) => {
-		const yearA = Number(a.fields.year?.['en-US']) || 0
-		const yearB = Number(b.fields.year?.['en-US']) || 0
-		return yearB - yearA
-	})
-
 	return (
-		<section 
-			ref={sectionRef} 
-			className={`${css.worksmenu} grid space`}
-		>
+		<section ref={sectionRef} className={`${css.worksmenu} grid space`}>
 			<nav ref={navRef}>
 				{Array.isArray(projects) && projects.length > 0
 					? sortedProjects.map((project, i) => {
@@ -71,20 +74,14 @@ const WorksMenu: React.FC = () => {
 									onMouseEnter={() => setHoveredProject(project)}
 								/>
 							)
-					})
+						})
 					: null}
 			</nav>
 			<div className={css.projectInfo}>
 				<h2>{getLocalizedField(hoveredProject?.fields?.title, language)}</h2>
-				<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`}>
-					{language === 'da-DK' ? 'undersøg' : 'explore'}
-				</Link>
+				<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`}>{language === 'da-DK' ? 'undersøg' : 'explore'}</Link>
 			</div>
-			{hoveredProject && (
-				<>
-					<p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>
-				</>
-			)}
+			{hoveredProject && <p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>}
 		</section>
 	)
 }
