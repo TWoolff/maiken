@@ -1,3 +1,4 @@
+import css from './content.module.css'
 interface TextContentProps {
 	content: any
 	language: string
@@ -6,7 +7,7 @@ interface TextContentProps {
 
 const TextContent = ({ content, language, index }: TextContentProps) => {
 	return (
-		<article className='space' style={{ gridRow: index + 2 }}>
+		<article className={`${css.textContainer} space`} style={{ gridRow: index + 2 }}>
 			{content.fields.text[language]?.content.map((paragraph: any, i: number) => (
 				<p key={i}>
 					{paragraph.content.map((textNode: any, tIndex: number) => {

@@ -33,8 +33,22 @@
 
 .intro {
   grid-column: 1 / -1;
+  display: block;
 
-  @media (min-width: 768px) {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+:global([data-pathname='/']) .intro {
+  @media (max-width: 768px) {
+    display: block;
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 768px) {
+  .intro {
     grid-column: 9 / -1;
   }
 }
