@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { findEntryBySlug } from '@/services/contentful'
 import { useAppContext } from '@/services/context'
 import { getLocalizedField } from '@/utils/localization'
+import { ProjectEntry } from '@/types/types'
 import TextContent from '@/components/content/TextContent'
 import ImageContent from '@/components/content/ImageContent'
 import VideoContent from '@/components/content/VideoContent'
@@ -12,7 +13,7 @@ import css from './project.module.css'
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { state } = useAppContext()
 	const language = state.language
-	const [project, setProject] = useState<any>(null)
+	const [project, setProject] = useState<ProjectEntry | null>(null)
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
 
@@ -58,10 +59,10 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	if (!project) return null
 
 	const title = getLocalizedField(project.fields.title, language) as string
-	const contentEntries = project.fields.content?.['en-US'] || []
+	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as ProjectEntry[]
 	const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-	const renderContent = (entry: any, index: number, entries: any[]) => {
+	const renderContent = (entry: ProjectEntry, index: number, entries: ProjectEntry[]) => {
 		switch (entry.sys.contentType.sys.id) {
 			case 'text':
 				return <TextContent key={index} content={entry} language={language} index={index} />
@@ -108,7 +109,6 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					src={`https:${mainImgUrl}`} 
 					alt={title} 
 					className={css.mainImg} 
-					layout="responsive"
 					width={800}
 					height={600}
 				/>
@@ -120,7 +120,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					</text>
 				</svg>
 			</div>
-			{contentEntries.length === 0 ? null : contentEntries.map((entry: any, i: number) => renderContent(entry, i, contentEntries))}
+			{contentEntries.length === 0 ? null : contentEntries.map((entry: ProjectEntry, i: number) => renderContent(entry, i, contentEntries))}
 		</section>
 	)
 }

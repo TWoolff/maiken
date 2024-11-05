@@ -10,11 +10,10 @@ export type Action =
   | { type: 'SET_STATE'; payload: Partial<State> }
   | { type: 'TOGGLE_LANGUAGE'; payload: { language: 'da-DK' | 'en-US' } }
   | { type: 'SET_NAV'; payload: string }
-  | { type: string; payload?: any }
 
 export type DataState = {
-    data?: InitData
-} | null | undefined | any
+    data?: PageData[]
+}
 
 export type ErrorState = string | null
 
@@ -39,19 +38,6 @@ export type LocalizedFields<T> = {
   [locale: string]: T
 }
 
-export type RichTextDocument = {
-  nodeType: string
-  data: object
-  content: Array<{
-    nodeType: string
-    data: object
-    content: Array<{
-      nodeType: string
-      value?: string
-      data: object
-    }>
-  }>
-}
 
 export type TextContent = {
   sys: {
@@ -113,3 +99,100 @@ export type InitData = {
 export type ContentfulDocument = {
   content: { content: { value: string }[] }[]
 } | undefined
+
+export interface Metadata {
+  tags: ContentfulTag[];
+}
+
+export interface Sys {
+  space: {
+    sys: {
+      type: string;
+      linkType: string;
+      id: string;
+    };
+  };
+  id: string;
+  type: string;
+  createdAt: string;
+  updatedAt: string;
+  environment: {
+    sys: {
+      id: string;
+      type: string;
+      linkType: string;
+    };
+  };
+  publishedVersion: number;
+  revision: number;
+  contentType: {
+    sys: {
+      type: string;
+      linkType: string;
+      id: string;
+    };
+  };
+}
+
+export interface LocalizedField<T> {
+  [locale: string]: T;
+}
+
+export interface PageFields {
+  title: LocalizedField<string>;
+  slug: LocalizedField<string>;
+  content: LocalizedField<ContentEntry[]>;
+}
+
+export interface ContentEntry {
+  metadata: Metadata;
+  sys: Sys;
+  fields: {
+    id: LocalizedField<string>;
+    text: LocalizedField<RichTextDocument>;
+  };
+}
+
+export interface RichTextDocument {
+  nodeType: string;
+  data: NodeData;
+  content: Array<{
+    data: NodeData;
+    content: Array<{
+      data: NodeData;
+      marks: Array<{ type: string }>;
+      value: string;
+      nodeType: string;
+    }>;
+    nodeType: string;
+  }>;
+}
+
+export interface PageData {
+  metadata: Metadata;
+  sys: Sys;
+  fields: PageFields;
+}
+
+export interface RichTextContent {
+  nodeType: string;
+  data: NodeData;
+  content?: RichTextContent[];
+  value?: string;
+  marks?: Array<{ type: string }>;
+}
+
+export interface ContactFields {
+  id: LocalizedField<string>;
+  text: LocalizedFields<RichTextDocument>;
+}
+
+export interface ContactEntry {
+  metadata: Metadata;
+  sys: Sys;
+  fields: ContactFields;
+}
+
+export type NodeData = {
+	uri?: string;
+}
