@@ -1,4 +1,6 @@
 .contact {
+  margin-top: 10rem;
+  
   & h1 {
     grid-column: 1 / -1;
   }
