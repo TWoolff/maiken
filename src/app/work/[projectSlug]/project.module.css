@@ -50,6 +50,10 @@
   transform-origin: center;
   fill: var(--color-black);
   text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    font-size: clamp(2rem, 8vw, 6rem);
+  }
 }
 
 .imageRow {
