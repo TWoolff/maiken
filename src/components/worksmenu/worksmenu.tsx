@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useAppContext } from '@/services/context'
 import { findEntryById } from '@/utils/content'
 import { getLocalizedField } from '@/utils/localization'
-import { ProjectEntry } from '@/types/types'
+import { PageData, ProjectEntry, ProjectContent } from '@/types/types'
 import css from './worksmenu.module.css'
 
 const WorksMenu: React.FC = () => {
@@ -12,10 +12,14 @@ const WorksMenu: React.FC = () => {
 	const currentNav = state.currentNav
 	const navRef = useRef<HTMLElement>(null)
 	const sectionRef = useRef<HTMLElement>(null)
-	const projectEntry = findEntryById(state.data, currentNav, 'en-US')
+	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
 
 	const projects: ProjectEntry[] = useMemo(() => {
-		return projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') ?? [] : []
+		if (projectEntry?.fields && 'project' in projectEntry.fields) {
+			const entry = projectEntry as unknown as ProjectContent
+			return getLocalizedField(entry.fields.project, 'en-US') ?? []
+		}
+		return []
 	}, [projectEntry])
 
 	const sortedProjects = useMemo(() => {

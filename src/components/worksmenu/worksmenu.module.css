@@ -34,16 +34,25 @@
       min-width: 10rem;
       flex-shrink: 0; 
       background-color: blue;
-      background-size: center;
+      background-size: cover;
       background-position: center;
-      transition: height 0.2s ease-out, margin-top 0.2s ease-in-out;
       position: relative;
       margin-top: 1.5rem;
+      overflow: hidden;
+      transition: height 0.2s ease-out, margin-top 0.2s ease-in-out;
     }
+
+
 
     & a:hover {
       height: 9rem;
       margin-top: 0;
+    }
+
+    & a:hover + a,
+    & a:has(+ a:hover) {
+      height: 7.5rem;
+      margin-top: 0.75rem;
     }
   }
 }
