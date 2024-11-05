@@ -60,8 +60,6 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const contentEntries = project.fields.content?.['en-US'] || []
 	const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-	console.log(project)
-
 	const renderContent = (entry: any, index: number, entries: any[]) => {
 		switch (entry.sys.contentType.sys.id) {
 			case 'text':
