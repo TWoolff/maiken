@@ -1,7 +1,8 @@
+import { ImageEntry } from '@/types/types'
 import css from './content.module.css'
 
 interface ImageContentProps {
-	content: any
+	content: ImageEntry
 }
 
 const ImageContent = ({ content }: ImageContentProps) => {

@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useAppContext } from '@/services/context'
 import { findEntryById } from '@/utils/content'
 import { getLocalizedTextContent } from '@/utils/localization'
+import { PageData, RichTextDocument } from '@/types/types'
 import Toggle from '@/components/formelements/toggle'
 import css from './header.module.css'
 
@@ -12,8 +13,8 @@ const Header: React.FC = () => {
 	const { state, dispatch } = useAppContext()
 	const pages = state.data
 	const language = state.language
-	const introTextEntry = findEntryById(pages, 'Intro', 'en-US')
-	const introTextContent = getLocalizedTextContent(introTextEntry, language) as { content: { content: { value: string }[] }[] } | null
+	const introTextEntry = findEntryById(pages as PageData[], 'Intro', 'en-US')
+	const introTextContent = getLocalizedTextContent(introTextEntry, language) as RichTextDocument | null
 
 	const handleLangChange = () => {
 		dispatch({ type: 'TOGGLE_LANGUAGE', payload: { language: state.language === 'da-DK' ? 'en-US' : 'da-DK' } })
@@ -44,7 +45,7 @@ const Header: React.FC = () => {
 			</nav>
 			{introTextContent && (
 				<div className={css.intro}>
-					{introTextContent.content.map((paragraph: { content: any[] }, i: number) => (
+					{introTextContent.content.map((paragraph: { content: RichTextDocument['content'][0]['content'] }, i: number) => (
 						<p key={i}>{paragraph.content.map((textNode: { value: string }) => textNode.value).join(' ')}</p>
 					))}
 				</div>

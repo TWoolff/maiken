@@ -1,6 +1,7 @@
 import { getLocalizedField } from './localization';
+import { PageData, TextContentEntry } from '@/types/types';
 
-export const findEntryById = (pages: any, entryId: string, locale: string = 'en-US') => {
+export const findEntryById = (pages: PageData[], entryId: string, locale: string = 'en-US') => {
   if (!Array.isArray(pages)) {
     return undefined;
   }
@@ -12,7 +13,7 @@ export const findEntryById = (pages: any, entryId: string, locale: string = 'en-
         (entry) => getLocalizedField(entry?.fields?.id, locale) === entryId
       );
       if (foundEntry) {
-        return foundEntry;
+        return foundEntry as TextContentEntry;
       }
     }
   }

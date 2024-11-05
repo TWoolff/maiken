@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { findEntryBySlug } from '@/services/contentful'
 import { useAppContext } from '@/services/context'
 import { getLocalizedField } from '@/utils/localization'
-import { ProjectEntry } from '@/types/types'
+import { ImageEntry, ProjectEntry, TextContentEntry, VideoEntry } from '@/types/types'
 import TextContent from '@/components/content/TextContent'
 import ImageContent from '@/components/content/ImageContent'
 import VideoContent from '@/components/content/VideoContent'
@@ -57,17 +57,18 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	}, [project, language])
 
 	if (!project) return null
-
 	const title = getLocalizedField(project.fields.title, language) as string
-	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as ProjectEntry[]
+	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry)[]
 	const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-	const renderContent = (entry: ProjectEntry, index: number, entries: ProjectEntry[]) => {
+	const renderContent = (entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry, index: number, entries: (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry)[]) => {
+		if (!('sys' in entry) || !('contentType' in entry.sys)) return null
+		
 		switch (entry.sys.contentType.sys.id) {
 			case 'text':
-				return <TextContent key={index} content={entry} language={language} index={index} />
+				return <TextContent key={index} content={entry as TextContentEntry} language={language} index={index} />
 			case 'image': {
-				const imageEntries = entries.filter(e => e.sys.contentType.sys.id === 'image')
+				const imageEntries = entries.filter(e => 'contentType' in e.sys && e.sys.contentType.sys.id === 'image') as ImageEntry[]
 				const imageIndex = imageEntries.findIndex(e => e.sys.id === entry.sys.id)
 
 				if (imageIndex % 2 === 0) {
@@ -75,7 +76,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					return (
 						<div key={index} className={`${css.imageRow} space grid`} style={{ gridRow: index + 2 }}>
 							<article className={css.imageWrapper} style={{ gridColumn: getFirstImageColumn(imageIndex) }}>
-								<ImageContent content={entry} />
+								<ImageContent content={entry as ImageEntry} />
 							</article>
 							{nextImage && (
 								<article className={css.imageWrapper} style={{ gridColumn: getSecondImageColumn(imageIndex) }}>
@@ -88,7 +89,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 				return null
 			}
 			case 'video':
-				return <VideoContent key={index} content={entry} index={index} />
+				return <VideoContent key={index} content={entry as VideoEntry} index={index} />
 			default:
 				return null
 		}
@@ -120,7 +121,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					</text>
 				</svg>
 			</div>
-			{contentEntries.length === 0 ? null : contentEntries.map((entry: ProjectEntry, i: number) => renderContent(entry, i, contentEntries))}
+			{contentEntries.length === 0 ? null : contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry, i: number) => renderContent(entry, i, contentEntries))}
 		</section>
 	)
 }

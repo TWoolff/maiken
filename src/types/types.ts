@@ -39,7 +39,7 @@ export type LocalizedFields<T> = {
 }
 
 
-export type TextContent = {
+export type TextContentEntry = {
   sys: {
     id: string
     type: string
@@ -88,7 +88,7 @@ export type ProjectContent = {
   }
 }
 
-export type ContentItem = ProjectContent | TextContent
+export type ContentItem = ProjectContent | TextContentEntry
 
 export type InitData = {
   title: LocalizedFields<string>
@@ -195,4 +195,48 @@ export interface ContactEntry {
 
 export type NodeData = {
 	uri?: string;
+}
+
+export interface ImageAsset {
+  fields: {
+    title: LocalizedFields<string>
+    description?: LocalizedFields<string>
+    file: LocalizedFields<{
+      url: string
+      details: {
+        size: number
+        image: {
+          width: number
+          height: number
+        }
+      }
+      fileName: string
+      contentType: string
+    }>
+  }
+}
+
+export interface ImageEntry {
+  metadata: Metadata
+  sys: Sys
+  fields: {
+    id: LocalizedFields<string>
+    image: LocalizedFields<ImageAsset>
+  }
+}
+
+export interface VideoEntry {
+  metadata: Metadata
+  sys: Sys
+  fields: {
+    id: LocalizedFields<string>
+    video: LocalizedFields<{
+      fields: {
+        file: LocalizedFields<{
+          url: string
+          contentType: string
+        }>
+      }
+    }>
+  }
 }

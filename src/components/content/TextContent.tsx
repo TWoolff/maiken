@@ -1,6 +1,8 @@
+import { TextContentEntry, RichTextDocument } from '@/types/types'
 import css from './content.module.css'
+
 interface TextContentProps {
-	content: any
+	content: TextContentEntry
 	language: string
 	index: number
 }
@@ -8,12 +10,12 @@ interface TextContentProps {
 const TextContent = ({ content, language, index }: TextContentProps) => {
 	return (
 		<article className={`${css.textContainer} space`} style={{ gridRow: index + 2 }}>
-			{content.fields.text[language]?.content.map((paragraph: any, i: number) => (
+			{content.fields.text[language]?.content.map((paragraph: RichTextDocument['content'][0], i: number) => (
 				<p key={i}>
-					{paragraph.content.map((textNode: any, tIndex: number) => {
+					{paragraph.content.map((textNode: RichTextDocument['content'][0]['content'][0], tIndex: number) => {
 						const text = textNode.value
-						const isBold = textNode.marks?.some((mark: any) => mark.type === 'bold')
-						const isItalic = textNode.marks?.some((mark: any) => mark.type === 'italic')
+						const isBold = textNode.marks?.some((mark) => mark.type === 'bold')
+						const isItalic = textNode.marks?.some((mark) => mark.type === 'italic')
 						return (
 							<span
 								key={tIndex}

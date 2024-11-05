@@ -1,8 +1,9 @@
 import { useRef, useEffect } from 'react'
+import { VideoEntry } from '@/types/types'
 import css from './content.module.css'
 
 interface VideoContentProps {
-	content: any
+	content: VideoEntry
 	index: number
 }
 
