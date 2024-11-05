@@ -46,18 +46,43 @@ const Contact: React.FC = () => {
   const title: string = getLocalizedField(contactData.fields?.title, language) as string;
   const contentArray = contactData.fields?.content?.['en-US'] || [];
 
+  console.log(contentArray)
+
+  const renderTextNode = (node: any) => {
+    switch (node.nodeType) {
+      case 'text':
+        return node.value;
+      case 'hyperlink':
+        return (
+          <a 
+            href={node.data.uri} 
+            target={node.data.uri.startsWith('mailto:') ? undefined : '_blank'}
+            rel={node.data.uri.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+          >
+            {node.content.map((content: any, i: number) => renderTextNode(content))}
+          </a>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <section className={`${css.contact} grid space`}>
       <h1>{title}</h1>
       {contentArray.length > 0 ? (
         contentArray.map((entry: any, i: number) => {
           if (entry.fields?.text) {
-            const textContent: { content: { content: { value: string }[] }[] } | null = getLocalizedField(entry.fields.text, language);
+            const textContent: { content: { content: any[] }[] } | null = getLocalizedField(entry.fields.text, language);
             return (
               <div className={css.content} key={i}>
                 {textContent?.content.map((paragraph: any, i: number) => (
                   <p key={i}>
-                    {paragraph.content.map((textNode: any) => textNode.value).join(' ')}
+                    {paragraph.content.map((textNode: any, j: number) => (
+                      <span key={j}>
+                        {renderTextNode(textNode)}
+                      </span>
+                    ))}
                   </p>
                 ))}
               </div>
@@ -65,7 +90,7 @@ const Contact: React.FC = () => {
           }
           return null;
         })
-      ) : null }
+      ) : null}
     </section>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useAppContext } from '@/services/context'
 import { findEntryById } from '@/utils/content'
@@ -10,6 +10,8 @@ const WorksMenu: React.FC = () => {
 	const { state } = useAppContext()
 	const language = state.language
 	const currentNav = state.currentNav
+	const navRef = useRef<HTMLElement>(null)
+	const sectionRef = useRef<HTMLElement>(null)
 	const projectEntry = findEntryById(state.data, currentNav, 'en-US')
 	const projects: ProjectEntry[] = projectEntry ? getLocalizedField(projectEntry.fields?.project, 'en-US') ?? [] : []
 	const [hoveredProject, setHoveredProject] = useState<ProjectEntry | null>(null)
@@ -22,10 +24,25 @@ const WorksMenu: React.FC = () => {
 		}
 	}, [currentNav, projects])
 
-	const calculateWidth = (projectCount: number) => {
-		const gap = 1
-		return `calc((100% - ${(projectCount - 1) * gap}rem) / ${projectCount})`
-	}
+	useEffect(() => {
+		const handleWheel = (e: WheelEvent) => {
+			if (navRef.current) {
+				e.preventDefault()
+				navRef.current.scrollLeft += e.deltaY * 2
+			}
+		}
+
+		const sectionElement = sectionRef.current
+		if (sectionElement) {
+			sectionElement.addEventListener('wheel', handleWheel, { passive: false })
+		}
+
+		return () => {
+			if (sectionElement) {
+				sectionElement.removeEventListener('wheel', handleWheel)
+			}
+		}
+	}, [])
 
 	const sortedProjects = [...projects].sort((a, b) => {
 		const yearA = Number(a.fields.year?.['en-US']) || 0
@@ -34,12 +51,14 @@ const WorksMenu: React.FC = () => {
 	})
 
 	return (
-		<section className={`${css.worksmenu} grid space`}>
-			<nav>
+		<section 
+			ref={sectionRef} 
+			className={`${css.worksmenu} grid space`}
+		>
+			<nav ref={navRef}>
 				{Array.isArray(projects) && projects.length > 0
 					? sortedProjects.map((project, i) => {
 							const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US')
-							const width = calculateWidth(projects.length)
 							const isActive = hoveredProject === project ? css.active : ''
 							const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
@@ -47,7 +66,7 @@ const WorksMenu: React.FC = () => {
 								<Link
 									href={`/work/${projectSlug}`}
 									key={i}
-									style={{ width, backgroundImage: mainImgUrl ? `url(${mainImgUrl})` : 'none' }}
+									style={{ backgroundImage: mainImgUrl ? `url(${mainImgUrl})` : 'none' }}
 									className={isActive}
 									onMouseEnter={() => setHoveredProject(project)}
 								/>
@@ -57,7 +76,7 @@ const WorksMenu: React.FC = () => {
 			</nav>
 			<div className={css.projectInfo}>
 				<h2>{getLocalizedField(hoveredProject?.fields?.title, language)}</h2>
-				<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`} className={css.explore}>
+				<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`}>
 					{language === 'da-DK' ? 'undersøg' : 'explore'}
 				</Link>
 			</div>
