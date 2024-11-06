@@ -1,6 +1,6 @@
 .worksmenu {
   grid-column: 1 / -1;
-  grid-template-rows: 45dvh 10rem 5rem 1fr;
+  grid-template-rows: 45dvh 10rem 8rem 1fr;
   height: 100vh;
   position: relative;
   width: 100%;
@@ -61,22 +61,23 @@
   grid-column: 1 / 5;
   grid-row: 3;
   align-self: start;
+}
 
-  & a {
-    display: block;
-    margin-top: 3rem;
-    font-family: var(--font-heading);
-    text-transform: unset;
+.explore {
+  grid-column: 1 / 5;
+  grid-row: 4;
+  display: block;
+  font-family: var(--font-heading);
+  text-transform: unset;
   
-    &:before {
-      content: '';
-      display: inline-block;
-      width: 1.125rem;
-      height: 0.5rem;
-      border-radius: 0.25rem;
-      background-color: var(--color-red);
-      margin-right: 0.5rem;
-    }
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 1.125rem;
+    height: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: var(--color-red);
+    margin-right: 0.5rem;
   }
 }
 

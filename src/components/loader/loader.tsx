@@ -1,11 +1,11 @@
-import css from './loader.module.css';
+import css from './loader.module.css'
 
 const Loader = () => {
-  return ( 
-    <section className={css.loader}>
-      <div className={css.spinner} />
-    </section>
-  );
+	return (
+		<section className={css.loader}>
+			<div className={css.spinner} />
+		</section>
+	)
 }
 
-export default Loader;
+export default Loader

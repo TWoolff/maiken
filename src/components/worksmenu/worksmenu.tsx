@@ -83,8 +83,8 @@ const WorksMenu: React.FC = () => {
 			</nav>
 			<div className={css.projectInfo}>
 				<h2>{getLocalizedField(hoveredProject?.fields?.title, language)}</h2>
-				<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`}>{language === 'da-DK' ? 'undersøg' : 'explore'}</Link>
 			</div>
+				<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`} className={css.explore}>{language === 'da-DK' ? 'undersøg' : 'explore'}</Link>
 			{hoveredProject && <p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>}
 		</section>
 	)

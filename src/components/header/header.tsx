@@ -25,10 +25,7 @@ const Header: React.FC = () => {
 	}
 
 	return (
-		<header 
-			className={`${css.header} grid space`}
-			data-pathname={pathname}
-		>
+		<header className={`${css.header} grid space`} data-pathname={pathname}>
 			<Link href='/' className={css.logo}>
 				MAIKEN VIBE BAUER
 			</Link>
