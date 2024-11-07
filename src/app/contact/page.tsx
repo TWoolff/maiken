@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useAppContext } from '@/services/context'
 import { getPage } from '@/services/contentful'
 import { getLocalizedField } from '@/utils/localization'
-import { ContactEntry, PageData, RichTextContent, NodeData } from '@/types/types'
+import { ContactEntry, PageData, RichTextContent, NodeData, RichTextDocument, TextNode, HyperlinkNode } from '@/types/types'
 import Loader from '@/components/loader/loader'
 import css from './contact.module.css'
 
@@ -73,13 +73,13 @@ const Contact: React.FC = () => {
 			{contentArray.length > 0
 				? contentArray.map((entry: ContactEntry, i: number) => {
 						if (entry.fields?.text) {
-							const textContent: { content: { content: RichTextContent[] }[] } | null = getLocalizedField(entry.fields.text, language)
+							const textContent = getLocalizedField(entry.fields.text, language) as RichTextDocument
 							return (
 								<div className={css.content} key={i}>
-									{textContent?.content.map((paragraph: { content: RichTextContent[] }, i: number) => (
+									{textContent?.content.map((paragraph: TextNode | HyperlinkNode, i: number) => (
 										<p key={i}>
-											{paragraph.content.map((textNode: RichTextContent, j: number) => (
-												<span key={j}>{renderTextNode(textNode)}</span>
+											{paragraph.content?.map((textNode, j: number) => (
+												<span key={j}>{renderTextNode(textNode as RichTextContent)}</span>
 											))}
 										</p>
 									))}
