@@ -1,4 +1,4 @@
-import { TextContentEntry, RichTextDocument } from '@/types/types'
+import { TextContentEntry, RichTextDocument, HyperlinkNode } from '@/types/types'
 import css from './content.module.css'
 
 interface TextContentProps {
@@ -8,14 +8,35 @@ interface TextContentProps {
 }
 
 const TextContent = ({ content, language, index }: TextContentProps) => {
+	console.log(content)
 	return (
 		<article className={`${css.textContainer} space`} style={{ gridRow: index + 2 }}>
 			{content.fields.text[language]?.content.map((paragraph: RichTextDocument['content'][0], i: number) => (
 				<p key={i}>
 					{paragraph.content.map((textNode: RichTextDocument['content'][0]['content'][0], tIndex: number) => {
 						const text = textNode.value
-						const isBold = textNode.marks?.some((mark) => mark.type === 'bold')
-						const isItalic = textNode.marks?.some((mark) => mark.type === 'italic')
+						const isBold = textNode.marks?.some(mark => mark.type === 'bold')
+						const isItalic = textNode.marks?.some(mark => mark.type === 'italic')
+
+						if (textNode.nodeType === 'hyperlink' && 'data' in textNode && 'content' in textNode) {
+							const hyperlinkNode = textNode as HyperlinkNode
+							return (
+								<a key={tIndex} href={hyperlinkNode.data.uri} target='_blank' rel='noopener noreferrer'>
+									{hyperlinkNode.content.map((linkText, linkIndex) => (
+										<span
+											key={linkIndex}
+											style={{
+												fontWeight: linkText.marks?.some(mark => mark.type === 'bold') ? 'bold' : 'normal',
+												fontStyle: linkText.marks?.some(mark => mark.type === 'italic') ? 'italic' : 'normal',
+											}}
+										>
+											{linkText.value}
+										</span>
+									))}
+								</a>
+							)
+						}
+
 						return (
 							<span
 								key={tIndex}

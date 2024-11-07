@@ -132,16 +132,28 @@ export interface ContentEntry {
 export interface RichTextDocument {
 	nodeType: string
 	data: NodeData
+	content: Array<TextNode | HyperlinkNode>
+}
+
+export interface TextNode {
+	data: NodeData
 	content: Array<{
 		data: NodeData
-		content: Array<{
-			data: NodeData
-			marks: Array<{ type: string }>
-			value: string
-			nodeType: string
-		}>
+		marks?: Array<{ type: string }>
+		value: string
 		nodeType: string
 	}>
+	nodeType: string
+}
+
+export interface HyperlinkNode {
+	data: NodeData & { uri: string }
+	content: Array<{
+		value: string
+		nodeType: string
+		marks?: Array<{ type: string }>
+	}>
+	nodeType: 'hyperlink'
 }
 
 export interface PageData {

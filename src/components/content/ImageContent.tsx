@@ -10,8 +10,6 @@ const ImageContent = ({ content }: ImageContentProps) => {
 	const imageUrl = content.fields.image['en-US']?.fields?.file?.['en-US']?.url
 	const imageTitle = content.fields.image['en-US']?.fields?.title?.['en-US'] || ''
 
-	console.log('content Single', content)
-
 	if (!imageUrl) return null
 
 	return (
