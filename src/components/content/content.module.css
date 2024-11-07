@@ -1,18 +1,42 @@
-.imageWrapper {
+.imageDoubleContainer {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 40.5rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 }
 
-.imageContainer {
+.imageWrapperLeft, .imageWrapperRight {
   width: 100%;
-  height:40.5rem;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  height: 40.5rem;
+  position: relative;
+}
 
-  @media (max-width: 768px) {
-    margin-bottom: 2rem;
+.imageWrapperLeft{
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 50%;
   }
+}
+
+.imageWrapperSingle {
+  grid-column: 1 / -1;
+  width: 100%;
+  position: relative;
+}
+
+.imageSingle {
+  grid-column: 1 / -1;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .textContainer {

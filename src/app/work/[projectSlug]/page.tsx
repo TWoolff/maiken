@@ -4,10 +4,11 @@ import Image from 'next/image'
 import { findEntryBySlug } from '@/services/contentful'
 import { useAppContext } from '@/services/context'
 import { getLocalizedField } from '@/utils/localization'
-import { ImageEntry, ProjectEntry, TextContentEntry, VideoEntry } from '@/types/types'
+import { ImageEntry, ProjectEntry, TextContentEntry, VideoEntry, ImageDoubleEntry } from '@/types/types'
 import TextContent from '@/components/content/TextContent'
 import ImageContent from '@/components/content/ImageContent'
 import VideoContent from '@/components/content/VideoContent'
+import ImageDoubleContent from '@/components/content/ImageDoubleContent'
 import css from './project.module.css'
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
@@ -58,36 +59,27 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
-	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry)[]
+	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry)[]
 	const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-	const renderContent = (entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry, index: number, entries: (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry)[]) => {
+	const isImageDoubleEntry = (entry: any): entry is ImageDoubleEntry => {
+		return 'fields' in entry && 'imageLeft' in entry.fields && 'imageRight' in entry.fields && 'spacing' in entry.fields && entry.sys.contentType.sys.id === 'imageDouble'
+	}
+
+	const renderContent = (entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, index: number) => {
 		if (!('sys' in entry) || !('contentType' in entry.sys)) return null
-		
-		switch (entry.sys.contentType.sys.id) {
+
+		const contentType = entry.sys.contentType.sys.id
+		switch (contentType) {
 			case 'text':
 				return <TextContent key={index} content={entry as TextContentEntry} language={language} index={index} />
-			case 'image': {
-				const imageEntries = entries.filter(e => 'contentType' in e.sys && e.sys.contentType.sys.id === 'image') as ImageEntry[]
-				const imageIndex = imageEntries.findIndex(e => e.sys.id === entry.sys.id)
-
-				if (imageIndex % 2 === 0) {
-					const nextImage = imageEntries[imageIndex + 1]
-					return (
-						<div key={index} className={`${css.imageRow} space grid`} style={{ gridRow: index + 2 }}>
-							<article className={css.imageWrapper} style={{ gridColumn: getFirstImageColumn(imageIndex) }}>
-								<ImageContent content={entry as ImageEntry} />
-							</article>
-							{nextImage && (
-								<article className={css.imageWrapper} style={{ gridColumn: getSecondImageColumn(imageIndex) }}>
-									<ImageContent content={nextImage} />
-								</article>
-							)}
-						</div>
-					)
+			case 'image':
+				return <ImageContent key={index} content={entry as ImageEntry} />
+			case 'imageDouble':
+				if (isImageDoubleEntry(entry)) {
+					return <ImageDoubleContent key={index} content={entry} />
 				}
 				return null
-			}
 			case 'video':
 				return <VideoContent key={index} content={entry as VideoEntry} index={index} />
 			default:
@@ -95,25 +87,9 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}
 
-	const getFirstImageColumn = (pairIndex: number) => {
-		return pairIndex % 2 === 0 ? '1 / 5' : '1 / 8'
-	}
-
-	const getSecondImageColumn = (pairIndex: number) => {
-		return pairIndex % 2 === 0 ? '6 / -1' : '9 / -1'
-	}
-
 	return (
 		<section className={`${css.project} grid`}>
-			{mainImgUrl && (
-				<Image 
-					src={`https:${mainImgUrl}`} 
-					alt={title} 
-					className={css.mainImg} 
-					width={800}
-					height={600}
-				/>
-			)}
+			{mainImgUrl && <Image src={`https:${mainImgUrl}`} alt={title} className={css.mainImg} width={800} height={600} />}
 			<div className={css.titleContainer}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
 					<text ref={textRef} x='50%' y='50%' dominantBaseline='middle' textAnchor='middle' className={css.titleText}>
@@ -121,7 +97,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					</text>
 				</svg>
 			</div>
-			{contentEntries.length === 0 ? null : contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry, i: number) => renderContent(entry, i, contentEntries))}
+			{contentEntries.length === 0 ? null : contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, i: number) => renderContent(entry, i))}
 		</section>
 	)
 }

@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { EntrySkeletonType } from 'contentful'
+import { Asset, EntrySkeletonType } from 'contentful'
 
 export type AppContextType = {
 	state: State
@@ -238,5 +238,35 @@ export interface VideoEntry {
         }>
       }
     }>
+  }
+}
+
+export interface ImageDoubleEntry {
+  fields: {
+    imageLeft: {
+      'en-US': {
+        fields: {
+          title: { 'en-US': string };
+          file: { 'en-US': { url: string } }
+        }
+      }
+    };
+    imageRight: {
+      'en-US': {
+        fields: {
+          title: { 'en-US': string };
+          file: { 'en-US': { url: string } }
+        }
+      }
+    };
+    spacing: { 'en-US': string };
+  };
+}
+
+export interface ContentFields {
+  file: {
+    'en-US': {
+      url: string
+    }
   }
 }
