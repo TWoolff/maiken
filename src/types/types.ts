@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { Asset, EntrySkeletonType } from 'contentful'
+import { EntrySkeletonType } from 'contentful'
 
 export type AppContextType = {
 	state: State
