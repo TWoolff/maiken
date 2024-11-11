@@ -13,6 +13,8 @@
   width: 100%;
   height: 40.5rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .imageWrapperLeft{
@@ -37,6 +39,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: relative !important;
 }
 
 .textContainer {
@@ -64,4 +67,10 @@
 .videoContainer {
   width: 100%;
   grid-column: 1 / -1 !important;
+}
+
+.figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
