@@ -8,7 +8,6 @@ interface TextContentProps {
 }
 
 const TextContent = ({ content, language, index }: TextContentProps) => {
-	console.log('content', content)
 	return (
 		<article className={`${css.textContainer} space`} style={{ gridRow: index + 2 }}>
 			{content.fields.text[language]?.content.map((node: RichTextDocument['content'][0], i: number) => {
