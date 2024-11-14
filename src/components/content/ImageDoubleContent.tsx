@@ -1,39 +1,11 @@
 import Image from 'next/image'
 import { useAppContext } from '@/services/context'
 import css from './content.module.css'
+import { ImageDoubleEntry } from '@/types/types'
 
-interface ContentFields {
-	fields: {
-		title: {
-			'en-US': string
-			'da-DK': string
-		}
-		description?: {
-			'en-US': string
-			'da-DK': string
-		}
-		file: {
-			'en-US': {
-				url: string
-			}
-		}
-	}
-}
 
 interface ImageDoubleContentProps {
-	content: {
-		fields: {
-			imageLeft: {
-				'en-US': ContentFields
-			}
-			imageRight: {
-				'en-US': ContentFields
-			}
-			spacing: {
-				'en-US': number
-			}
-		}
-	}
+	content: ImageDoubleEntry
 }
 
 const ImageDoubleContent = ({ content }: ImageDoubleContentProps) => {
