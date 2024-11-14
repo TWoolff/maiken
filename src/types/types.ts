@@ -186,21 +186,25 @@ export type NodeData = {
 }
 
 export interface ImageAsset {
+	metadata: Metadata
+	sys: FullSys
 	fields: {
 		title: LocalizedFields<string>
 		description?: LocalizedFields<string>
-		file: LocalizedFields<{
-			url: string
-			details: {
-				size: number
-				image: {
-					width: number
-					height: number
+		file: {
+			'en-US': {
+				url: string
+				details: {
+					size: number
+					image: {
+						width: number
+						height: number
+					}
 				}
+				fileName: string
+				contentType: string
 			}
-			fileName: string
-			contentType: string
-		}>
+		}
 	}
 }
 
@@ -229,25 +233,19 @@ export interface VideoEntry {
 	}
 }
 
-export interface ImageDoubleEntry {
+export interface ImageDoubleEntry extends BaseEntry {
 	fields: {
+		id: LocalizedFields<string>
+		title: LocalizedFields<string>
 		imageLeft: {
-			'en-US': {
-				fields: {
-					title: { 'en-US': string }
-					file: { 'en-US': { url: string } }
-				}
-			}
+			'en-US': ImageAsset
 		}
 		imageRight: {
-			'en-US': {
-				fields: {
-					title: { 'en-US': string }
-					file: { 'en-US': { url: string } }
-				}
-			}
+			'en-US': ImageAsset
 		}
-		spacing: { 'en-US': string }
+		spacing: {
+			'en-US': number
+		}
 	}
 }
 
