@@ -16,7 +16,7 @@ const WorksMenu: React.FC = () => {
 	const sectionRef = useRef<HTMLElement>(null)
 	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
 	const router = useRouter()
-	const { setTransitionImage, setTransitionBounds } = useTransition()
+	const { setTransitionImage, setTransitionBounds, setFinalBounds } = useTransition()
 	const imagePreloadRef = useRef<HTMLImageElement | null>(null)
 	const [isTransitioning, setIsTransitioning] = useState(false)
 
@@ -87,6 +87,18 @@ const WorksMenu: React.FC = () => {
 
 	const preloadImage = (imageUrl: string) => {
 		if (imagePreloadRef.current) {
+			imagePreloadRef.current.onload = () => {
+				const aspectRatio = imagePreloadRef.current!.naturalHeight / imagePreloadRef.current!.naturalWidth
+				const windowWidth = window.innerWidth
+				const calculatedHeight = windowWidth * aspectRatio
+				
+				setFinalBounds({
+					top: 0,
+					left: 0,
+					width: windowWidth,
+					height: calculatedHeight
+				})
+			}
 			imagePreloadRef.current.src = `https:${imageUrl}`
 		}
 	}
