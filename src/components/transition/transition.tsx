@@ -58,7 +58,7 @@ const Transition = () => {
             style={{ 
               backgroundImage: `url(${transitionImage})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: 'top center',
               width: '100%',
               height: '100%'
             }}
