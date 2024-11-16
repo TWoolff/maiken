@@ -17,7 +17,6 @@ const WorksMenu: React.FC = () => {
 	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
 	const router = useRouter()
 	const { setTransitionImage, setTransitionBounds, setFinalBounds, setPreloadedImage } = useTransition()
-	const imagePreloadRef = useRef<HTMLImageElement | null>(null)
 
 	const projects: ProjectEntry[] = useMemo(() => {
 		if (projectEntry?.fields && 'project' in projectEntry.fields) {
