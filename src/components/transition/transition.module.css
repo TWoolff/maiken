@@ -2,12 +2,12 @@
   position: fixed;
   overflow: hidden;
   z-index: 9999;
+  pointer-events: none;
 }
 
 .transitionImage {
   width: 100%;
-  position: relative;
+  height: 100%;
   background-size: cover;
-  background-position: top center;
-
+  background-position: center;
 } 

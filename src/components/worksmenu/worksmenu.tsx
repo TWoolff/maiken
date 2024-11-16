@@ -18,6 +18,7 @@ const WorksMenu: React.FC = () => {
 	const router = useRouter()
 	const { setTransitionImage, setTransitionBounds } = useTransition()
 	const imagePreloadRef = useRef<HTMLImageElement | null>(null)
+	const [isTransitioning, setIsTransitioning] = useState(false)
 
 	const projects: ProjectEntry[] = useMemo(() => {
 		if (projectEntry?.fields && 'project' in projectEntry.fields) {
@@ -80,17 +81,8 @@ const WorksMenu: React.FC = () => {
 		setTransitionImage(`https:${mainImgUrl}`)
 		
 		setTimeout(() => {
-			setTransitionBounds({
-				top: 0,
-				left: 0,
-				width: window.innerWidth,
-				height: window.innerHeight
-			})
-		}, 50)
-		
-		setTimeout(() => {
 			router.push(`/work/${projectSlug}`)
-		}, 1000)
+		}, 800)
 	}
 
 	const preloadImage = (imageUrl: string) => {

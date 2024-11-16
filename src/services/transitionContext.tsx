@@ -6,6 +6,8 @@ type TransitionContextType = {
   setTransitionImage: (image: string | null) => void
   transitionBounds: { top: number; left: number; width: number; height: number } | null
   setTransitionBounds: (bounds: { top: number; left: number; width: number; height: number } | null) => void
+  finalBounds: { top: number; left: number; width: number; height: number } | null
+  setFinalBounds: (bounds: { top: number; left: number; width: number; height: number } | null) => void
   isTransitioning: boolean
   setIsTransitioning: (value: boolean) => void
 }
@@ -16,6 +18,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   const [transitionImage, setTransitionImage] = useState<string | null>(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionBounds, setTransitionBounds] = useState<{ top: number; left: number; width: number; height: number } | null>(null)
+  const [finalBounds, setFinalBounds] = useState<{ top: number; left: number; width: number; height: number } | null>(null)
 
   return (
     <TransitionContext.Provider value={{ 
@@ -24,7 +27,9 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       isTransitioning,
       setIsTransitioning,
       transitionBounds,
-      setTransitionBounds
+      setTransitionBounds,
+      finalBounds,
+      setFinalBounds
     }}>
       {children}
     </TransitionContext.Provider>

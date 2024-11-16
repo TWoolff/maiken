@@ -5,7 +5,7 @@ import { useTransition } from '@/services/transitionContext'
 import css from './transition.module.css'
 
 const Transition = () => {
-  const { transitionImage, transitionBounds, setTransitionImage, setTransitionBounds } = useTransition()
+  const { transitionImage, transitionBounds, finalBounds, setTransitionImage, setTransitionBounds, setFinalBounds } = useTransition()
   const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
@@ -14,16 +14,17 @@ const Transition = () => {
       const timer = setTimeout(() => {
         setTransitionImage(null)
         setTransitionBounds(null)
+        setFinalBounds(null)
         setIsAnimating(false)
-      }, 1200)
+      }, 1100)
       return () => clearTimeout(timer)
     }
-  }, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds])
+  }, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds, setFinalBounds])
 
   if (!transitionImage || !transitionBounds) return null
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isAnimating && (
         <motion.div 
           className={css.transitionWrapper}
@@ -33,21 +34,23 @@ const Transition = () => {
             left: transitionBounds.left,
             width: transitionBounds.width,
             height: transitionBounds.height,
-            zIndex: 9999
+            zIndex: 9999,
+            opacity: 1
           }}
           animate={{
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            position: 'fixed'
+            top: finalBounds?.top ?? 0,
+            left: finalBounds?.left ?? 0,
+            width: finalBounds?.width ?? '100vw',
+            height: finalBounds?.height ?? '100vh',
+            opacity: 1
           }}
           exit={{
             opacity: 0
           }}
           transition={{
             duration: 0.8,
-            ease: [0.645, 0.045, 0.355, 1.000]
+            ease: [0.645, 0.045, 0.355, 1.000],
+            opacity: { duration: 0.3, delay: 0.8 }
           }}
         >
           <motion.div 
@@ -57,7 +60,7 @@ const Transition = () => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               width: '100%',
-              height: '100%',
+              height: '100%'
             }}
           />
         </motion.div>

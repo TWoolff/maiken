@@ -19,7 +19,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
 	const mainImgRef = useRef<HTMLImageElement>(null)
-	const { setTransitionBounds } = useTransition()
+	const { setTransitionBounds, setFinalBounds } = useTransition()
 
 	useEffect(() => {
 		const fetchProject = async () => {
@@ -63,14 +63,14 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	useEffect(() => {
 		if (mainImgRef.current) {
 			const rect = mainImgRef.current.getBoundingClientRect()
-			setTransitionBounds({
+			setFinalBounds({
 				top: rect.top,
 				left: rect.left,
 				width: rect.width,
 				height: rect.height
 			})
 		}
-	}, [mainImgRef, setTransitionBounds])
+	}, [mainImgRef, setFinalBounds])
 
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
