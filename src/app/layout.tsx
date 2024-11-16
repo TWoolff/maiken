@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { AppProvider } from '../services/context'
 import Header from '@/components/header/header'
 import '@/styles/index.css'
+import { TransitionProvider } from '@/services/transitionContext'
+import Transition from '@/components/transition/transition'
 
 export const metadata: Metadata = {
 	title: 'Maiken',
@@ -27,8 +29,11 @@ const RootLayout: React.FC<{children?: React.ReactNode}> = ({children}) => {
     <html lang='en'>
       <body>
         <AppProvider>
-          <Header />
-          {children}
+          <TransitionProvider>
+            <Header />
+            <Transition />
+            {children}
+          </TransitionProvider>
         </AppProvider>
       </body>
     </html>

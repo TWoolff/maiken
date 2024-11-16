@@ -5,6 +5,8 @@ import { findEntryById } from '@/utils/content'
 import { getLocalizedField } from '@/utils/localization'
 import { PageData, ProjectEntry, ProjectContent } from '@/types/types'
 import css from './worksmenu.module.css'
+import { useRouter } from 'next/navigation'
+import { useTransition } from '@/services/transitionContext'
 
 const WorksMenu: React.FC = () => {
 	const { state } = useAppContext()
@@ -13,6 +15,8 @@ const WorksMenu: React.FC = () => {
 	const navRef = useRef<HTMLElement>(null)
 	const sectionRef = useRef<HTMLElement>(null)
 	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
+	const router = useRouter()
+	const { setTransitionImage, setTransitionBounds } = useTransition()
 
 	const projects: ProjectEntry[] = useMemo(() => {
 		if (projectEntry?.fields && 'project' in projectEntry.fields) {
@@ -60,6 +64,24 @@ const WorksMenu: React.FC = () => {
 		}
 	}, [])
 
+	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, mainImgUrl: string, projectSlug: string) => {
+		e.preventDefault()
+		const element = e.currentTarget
+		const rect = element.getBoundingClientRect()
+		
+		setTransitionBounds({
+			top: rect.top,
+			left: rect.left,
+			width: rect.width,
+			height: rect.height
+		})
+		
+		setTransitionImage(`https:${mainImgUrl}`)
+		setTimeout(() => {
+			router.push(`/work/${projectSlug}`)
+		}, 800)
+	}
+
 	return (
 		<section ref={sectionRef} className={`${css.worksmenu} grid space`}>
 			<nav ref={navRef}>
@@ -73,9 +95,10 @@ const WorksMenu: React.FC = () => {
 								<Link
 									href={`/work/${projectSlug}`}
 									key={i}
-									style={{ backgroundImage: mainImgUrl ? `url(${mainImgUrl})` : 'none' }}
+									style={{ backgroundImage: mainImgUrl ? `url(https:${mainImgUrl})` : 'none' }}
 									className={isActive}
 									onMouseEnter={() => setHoveredProject(project)}
+									onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}
 								/>
 							)
 						})
@@ -84,7 +107,7 @@ const WorksMenu: React.FC = () => {
 			<div className={css.projectInfo}>
 				<h2>{getLocalizedField(hoveredProject?.fields?.title, language)}</h2>
 			</div>
-				<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`} className={css.explore}>{language === 'da-DK' ? 'undersøg' : 'explore'}</Link>
+			<Link href={`work/${getLocalizedField(hoveredProject?.fields?.slug, 'en-US')}`} className={css.explore}>{language === 'da-DK' ? 'undersøg' : 'explore'}</Link>
 			{hoveredProject && <p className={css.year}>{`WORK ${hoveredProject?.fields?.year?.['en-US'] ?? ''}`}</p>}
 		</section>
 	)

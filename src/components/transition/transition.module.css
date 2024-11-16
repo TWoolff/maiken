@@ -1,0 +1,13 @@
+.transitionWrapper {
+  position: fixed;
+  overflow: hidden;
+  z-index: 9999;
+  width: 100vw;
+}
+
+.transitionImage {
+  width: 100%;
+  position: relative;
+  background-size: cover;
+  background-position: top center;
+} 
