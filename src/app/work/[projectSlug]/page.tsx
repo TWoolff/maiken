@@ -18,7 +18,6 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const [project, setProject] = useState<ProjectEntry | null>(null)
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
-	const mainImgRef = useRef<HTMLImageElement>(null)
 	const { setFinalBounds } = useTransition()
 
 	useEffect(() => {
