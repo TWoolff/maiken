@@ -18,7 +18,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const [project, setProject] = useState<ProjectEntry | null>(null)
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
-	const { setFinalBounds } = useTransition()
+	const { preloadedImage } = useTransition()
 
 	useEffect(() => {
 		const fetchProject = async () => {
@@ -91,23 +91,23 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 
 	return (
 		<section className={`${css.project} grid`}>
-			{mainImgUrl && (
+			{preloadedImage ? (
 				<Image 
-					src={`https:${mainImgUrl}`} 
+					src={preloadedImage}
 					alt={title} 
 					className={css.mainImg} 
 					width={800} 
 					height={600} 
 					priority={true}
-					onLoadingComplete={(img) => {
-						const rect = img.getBoundingClientRect()
-						setFinalBounds({
-							top: rect.top,
-							left: rect.left,
-							width: rect.width,
-							height: rect.height
-						})
-					}}
+				/>
+			) : mainImgUrl && (
+				<Image 
+					src={`https:${mainImgUrl}`}
+					alt={title} 
+					className={css.mainImg} 
+					width={800} 
+					height={600} 
+					priority={true}
 				/>
 			)}
 			<div className={css.titleContainer}>

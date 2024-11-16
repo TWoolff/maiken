@@ -16,7 +16,7 @@ const WorksMenu: React.FC = () => {
 	const sectionRef = useRef<HTMLElement>(null)
 	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
 	const router = useRouter()
-	const { setTransitionImage, setTransitionBounds, setFinalBounds } = useTransition()
+	const { setTransitionImage, setTransitionBounds, setFinalBounds, setPreloadedImage } = useTransition()
 	const imagePreloadRef = useRef<HTMLImageElement | null>(null)
 
 	const projects: ProjectEntry[] = useMemo(() => {
@@ -78,6 +78,7 @@ const WorksMenu: React.FC = () => {
 		})
 		
 		setTransitionImage(`https:${mainImgUrl}`)
+		setPreloadedImage(`https:${mainImgUrl}`)
 		
 		setTimeout(() => {
 			router.push(`/work/${projectSlug}`)

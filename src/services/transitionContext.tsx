@@ -4,6 +4,8 @@ import { createContext, useContext, useState, ReactNode } from 'react'
 type TransitionContextType = {
   transitionImage: string | null
   setTransitionImage: (image: string | null) => void
+  preloadedImage: string | null
+  setPreloadedImage: (image: string | null) => void
   transitionBounds: { top: number; left: number; width: number; height: number } | null
   setTransitionBounds: (bounds: { top: number; left: number; width: number; height: number } | null) => void
   finalBounds: { top: number; left: number; width: number; height: number } | null
@@ -16,6 +18,7 @@ const TransitionContext = createContext<TransitionContextType | undefined>(undef
 
 export function TransitionProvider({ children }: { children: ReactNode }) {
   const [transitionImage, setTransitionImage] = useState<string | null>(null)
+  const [preloadedImage, setPreloadedImage] = useState<string | null>(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionBounds, setTransitionBounds] = useState<{ top: number; left: number; width: number; height: number } | null>(null)
   const [finalBounds, setFinalBounds] = useState<{ top: number; left: number; width: number; height: number } | null>(null)
@@ -24,6 +27,8 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     <TransitionContext.Provider value={{ 
       transitionImage, 
       setTransitionImage,
+      preloadedImage,
+      setPreloadedImage,
       isTransitioning,
       setIsTransitioning,
       transitionBounds,
