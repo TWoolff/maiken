@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useAppContext } from '@/services/context'
 import { findEntryById } from '@/utils/content'
 import { getLocalizedField } from '@/utils/localization'
 import { PageData, ProjectEntry, ProjectContent } from '@/types/types'
-import css from './worksmenu.module.css'
-import { useRouter } from 'next/navigation'
 import { useTransition } from '@/services/transitionContext'
+import css from './worksmenu.module.css'
 
 const WorksMenu: React.FC = () => {
 	const { state } = useAppContext()
@@ -86,6 +86,10 @@ const WorksMenu: React.FC = () => {
 
 	const preloadImage = (imageUrl: string) => {
 		const img = new Image()
+		img.src = `https:${imageUrl}`
+		img.style.display = 'none'
+		document.body.appendChild(img)
+		
 		img.onload = () => {
 			const aspectRatio = img.naturalHeight / img.naturalWidth
 			const windowWidth = window.innerWidth
@@ -98,7 +102,6 @@ const WorksMenu: React.FC = () => {
 				height: calculatedHeight
 			})
 		}
-		img.src = `https:${imageUrl}`
 	}
 
 	const handleMouseEnter = (project: ProjectEntry) => {

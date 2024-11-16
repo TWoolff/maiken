@@ -98,6 +98,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					className={css.mainImg} 
 					width={800} 
 					height={600} 
+					priority={true}
 					onLoadingComplete={(img) => {
 						const rect = img.getBoundingClientRect()
 						setFinalBounds({
