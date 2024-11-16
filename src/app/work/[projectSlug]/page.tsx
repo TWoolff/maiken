@@ -9,6 +9,7 @@ import TextContent from '@/components/content/TextContent'
 import ImageContent from '@/components/content/ImageContent'
 import VideoContent from '@/components/content/VideoContent'
 import ImageDoubleContent from '@/components/content/ImageDoubleContent'
+import { useTransition } from '@/services/transitionContext'
 import css from './project.module.css'
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
@@ -17,6 +18,8 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const [project, setProject] = useState<ProjectEntry | null>(null)
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
+	const mainImgRef = useRef<HTMLImageElement>(null)
+	const { setTransitionBounds } = useTransition()
 
 	useEffect(() => {
 		const fetchProject = async () => {
@@ -57,6 +60,18 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [project, language])
 
+	useEffect(() => {
+		if (mainImgRef.current) {
+			const rect = mainImgRef.current.getBoundingClientRect()
+			setTransitionBounds({
+				top: rect.top,
+				left: rect.left,
+				width: rect.width,
+				height: rect.height
+			})
+		}
+	}, [mainImgRef, setTransitionBounds])
+
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry)[]
@@ -89,7 +104,16 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 
 	return (
 		<section className={`${css.project} grid`}>
-			{mainImgUrl && <Image src={`https:${mainImgUrl}`} alt={title} className={css.mainImg} width={800} height={600} />}
+			{mainImgUrl && (
+				<Image 
+					ref={mainImgRef}
+					src={`https:${mainImgUrl}`} 
+					alt={title} 
+					className={css.mainImg} 
+					width={800} 
+					height={600} 
+				/>
+			)}
 			<div className={css.titleContainer}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
 					<text ref={textRef} x='50%' y='50%' dominantBaseline='middle' textAnchor='middle' className={css.titleText}>

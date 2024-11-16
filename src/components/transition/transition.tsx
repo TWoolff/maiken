@@ -13,9 +13,9 @@ const Transition = () => {
       setIsAnimating(true)
       const timer = setTimeout(() => {
         setTransitionImage(null)
-        setTransitionBounds({ top: 0, left: 0, width: 0, height: 0 })
+        setTransitionBounds(null)
         setIsAnimating(false)
-      }, 1000)
+      }, 1200)
       return () => clearTimeout(timer)
     }
   }, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds])
@@ -57,7 +57,7 @@ const Transition = () => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               width: '100%',
-              height: '100%'
+              height: '100%',
             }}
           />
         </motion.div>

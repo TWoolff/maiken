@@ -17,6 +17,7 @@ const WorksMenu: React.FC = () => {
 	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
 	const router = useRouter()
 	const { setTransitionImage, setTransitionBounds } = useTransition()
+	const imagePreloadRef = useRef<HTMLImageElement | null>(null)
 
 	const projects: ProjectEntry[] = useMemo(() => {
 		if (projectEntry?.fields && 'project' in projectEntry.fields) {
@@ -77,13 +78,38 @@ const WorksMenu: React.FC = () => {
 		})
 		
 		setTransitionImage(`https:${mainImgUrl}`)
+		
+		setTimeout(() => {
+			setTransitionBounds({
+				top: 0,
+				left: 0,
+				width: window.innerWidth,
+				height: window.innerHeight
+			})
+		}, 50)
+		
 		setTimeout(() => {
 			router.push(`/work/${projectSlug}`)
-		}, 800)
+		}, 1000)
+	}
+
+	const preloadImage = (imageUrl: string) => {
+		if (imagePreloadRef.current) {
+			imagePreloadRef.current.src = `https:${imageUrl}`
+		}
+	}
+
+	const handleMouseEnter = (project: ProjectEntry) => {
+		setHoveredProject(project)
+		const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
+		if (mainImgUrl) {
+			preloadImage(mainImgUrl)
+		}
 	}
 
 	return (
 		<section ref={sectionRef} className={`${css.worksmenu} grid space`}>
+			<img ref={imagePreloadRef} style={{ display: 'none' }} alt="" />
 			<nav ref={navRef}>
 				{Array.isArray(projects) && projects.length > 0
 					? sortedProjects.map((project, i) => {
@@ -97,7 +123,7 @@ const WorksMenu: React.FC = () => {
 									key={i}
 									style={{ backgroundImage: mainImgUrl ? `url(https:${mainImgUrl})` : 'none' }}
 									className={isActive}
-									onMouseEnter={() => setHoveredProject(project)}
+									onMouseEnter={() => handleMouseEnter(project)}
 									onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}
 								/>
 							)
