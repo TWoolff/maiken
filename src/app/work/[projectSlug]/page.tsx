@@ -62,7 +62,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry)[]
-	const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
+	const mainImgUrl = project.fields.mainImg?.['en-US'].fields.file?.['en-US'].url
 
 	const isImageDoubleEntry = (entry: any): entry is ImageDoubleEntry => {
 		return 'fields' in entry && 'imageLeft' in entry.fields && 'imageRight' in entry.fields && 'spacing' in entry.fields && entry.sys.contentType.sys.id === 'imageDouble'
@@ -102,8 +102,8 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 				/>
 			) : mainImgUrl && (
 				<Image 
-					src={`https:${mainImgUrl}`}
-					alt={title} 
+				src={`https:${mainImgUrl}`}
+				alt={title} 
 					className={css.mainImg} 
 					width={800} 
 					height={600} 
