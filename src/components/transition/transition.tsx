@@ -45,7 +45,7 @@ const Transition = () => {
             opacity: 1
           }}
           exit={{
-            opacity: 0
+            opacity: 1
           }}
           transition={{
             duration: 0.8,

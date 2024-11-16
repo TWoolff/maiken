@@ -2,10 +2,10 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAppContext } from '@/services/context'
+import { useTransition } from '@/services/transitionContext'
 import { findEntryById } from '@/utils/content'
 import { getLocalizedField } from '@/utils/localization'
 import { PageData, ProjectEntry, ProjectContent } from '@/types/types'
-import { useTransition } from '@/services/transitionContext'
 import css from './worksmenu.module.css'
 
 const WorksMenu: React.FC = () => {
