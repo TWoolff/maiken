@@ -18,7 +18,6 @@ const WorksMenu: React.FC = () => {
 	const router = useRouter()
 	const { setTransitionImage, setTransitionBounds, setFinalBounds } = useTransition()
 	const imagePreloadRef = useRef<HTMLImageElement | null>(null)
-	const [isTransitioning, setIsTransitioning] = useState(false)
 
 	const projects: ProjectEntry[] = useMemo(() => {
 		if (projectEntry?.fields && 'project' in projectEntry.fields) {

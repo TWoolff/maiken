@@ -19,7 +19,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
 	const mainImgRef = useRef<HTMLImageElement>(null)
-	const { setTransitionBounds, setFinalBounds } = useTransition()
+	const { setFinalBounds } = useTransition()
 
 	useEffect(() => {
 		const fetchProject = async () => {
