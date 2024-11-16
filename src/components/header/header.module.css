@@ -3,6 +3,8 @@
   width: 100%;
   align-items: start;
   z-index: 9999;
+  mix-blend-mode: difference;
+  color: white;
 
   & nav {
     grid-column: 4 / -1;
@@ -56,4 +58,12 @@
 .headerToggle {
   margin-top: 0.5rem;
   font-size: 0.75rem;
+}
+
+.headerToggle :global(.slider) {
+  background-color: white !important;
+}
+
+.headerToggle :global(.slider:before) {
+  background-color: black !important;
 }
