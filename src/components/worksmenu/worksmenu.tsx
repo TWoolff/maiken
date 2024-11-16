@@ -85,37 +85,31 @@ const WorksMenu: React.FC = () => {
 		}, 800)
 	}
 
-	const preloadImage = (imageUrl: string) => {
-		const img = new Image()
-		img.src = `https:${imageUrl}`
-		img.style.display = 'none'
-		document.body.appendChild(img)
-		
-		img.onload = () => {
-			const aspectRatio = img.naturalHeight / img.naturalWidth
-			const windowWidth = window.innerWidth
-			const calculatedHeight = windowWidth * aspectRatio
-			
-			setFinalBounds({
-				top: 0,
-				left: 0,
-				width: windowWidth,
-				height: calculatedHeight
-			})
-		}
-	}
-
 	const handleMouseEnter = (project: ProjectEntry) => {
 		setHoveredProject(project)
 		const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 		if (mainImgUrl) {
-			preloadImage(mainImgUrl)
+			const fullUrl = `https:${mainImgUrl}`
+			const img = new Image()
+			img.src = fullUrl
+			
+			img.onload = () => {
+				const aspectRatio = img.naturalHeight / img.naturalWidth
+				const windowWidth = window.innerWidth
+				const calculatedHeight = windowWidth * aspectRatio
+				
+				setFinalBounds({
+					top: 0,
+					left: 0,
+					width: windowWidth,
+					height: calculatedHeight
+				})
+			}
 		}
 	}
 
 	return (
 		<section ref={sectionRef} className={`${css.worksmenu} grid space`}>
-			<img ref={imagePreloadRef} style={{ display: 'none' }} alt="" />
 			<nav ref={navRef}>
 				{Array.isArray(projects) && projects.length > 0
 					? sortedProjects.map((project, i) => {
