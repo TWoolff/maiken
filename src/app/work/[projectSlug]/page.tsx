@@ -60,18 +60,6 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [project, language])
 
-	useEffect(() => {
-		if (mainImgRef.current) {
-			const rect = mainImgRef.current.getBoundingClientRect()
-			setFinalBounds({
-				top: rect.top,
-				left: rect.left,
-				width: rect.width,
-				height: rect.height
-			})
-		}
-	}, [mainImgRef, setFinalBounds])
-
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry)[]
@@ -106,12 +94,20 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		<section className={`${css.project} grid`}>
 			{mainImgUrl && (
 				<Image 
-					ref={mainImgRef}
 					src={`https:${mainImgUrl}`} 
 					alt={title} 
 					className={css.mainImg} 
 					width={800} 
 					height={600} 
+					onLoadingComplete={(img) => {
+						const rect = img.getBoundingClientRect()
+						setFinalBounds({
+							top: rect.top,
+							left: rect.left,
+							width: rect.width,
+							height: rect.height
+						})
+					}}
 				/>
 			)}
 			<div className={css.titleContainer}>
