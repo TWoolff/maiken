@@ -16,7 +16,7 @@ const WorksMenu: React.FC = () => {
 	const sectionRef = useRef<HTMLElement>(null)
 	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
 	const router = useRouter()
-	const { setTransitionImage, setTransitionBounds, setFinalBounds, setPreloadedImage } = useTransition()
+	const { setTransitionImage, setTransitionBounds, setFinalBounds, setIsTransitioning } = useTransition()
 
 	const projects: ProjectEntry[] = useMemo(() => {
 		if (projectEntry?.fields && 'project' in projectEntry.fields) {
@@ -66,6 +66,8 @@ const WorksMenu: React.FC = () => {
 
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, mainImgUrl: string, projectSlug: string) => {
 		e.preventDefault()
+		window.scrollTo(0, 0)
+		
 		const element = e.currentTarget
 		const rect = element.getBoundingClientRect()
 		
@@ -77,10 +79,15 @@ const WorksMenu: React.FC = () => {
 		})
 		
 		setTransitionImage(`https:${mainImgUrl}`)
-		setPreloadedImage(`https:${mainImgUrl}`)
+		setIsTransitioning(true)
 		
 		setTimeout(() => {
 			router.push(`/work/${projectSlug}`)
+			window.scrollTo(0, 0)
+			setTimeout(() => {
+				window.scrollTo(0, 0)
+				setIsTransitioning(false)
+			}, 800)
 		}, 800)
 	}
 
@@ -88,22 +95,16 @@ const WorksMenu: React.FC = () => {
 		setHoveredProject(project)
 		const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 		if (mainImgUrl) {
-			const fullUrl = `https:${mainImgUrl}`
-			const img = new Image()
-			img.src = fullUrl
+			const windowWidth = window.innerWidth
+			const aspectRatio = 0.75
+			const calculatedHeight = windowWidth * aspectRatio
 			
-			img.onload = () => {
-				const aspectRatio = img.naturalHeight / img.naturalWidth
-				const windowWidth = window.innerWidth
-				const calculatedHeight = windowWidth * aspectRatio
-				
-				setFinalBounds({
-					top: 0,
-					left: 0,
-					width: windowWidth,
-					height: calculatedHeight
-				})
-			}
+			setFinalBounds({
+				top: 0,
+				left: 0,
+				width: windowWidth,
+				height: calculatedHeight
+			})
 		}
 	}
 

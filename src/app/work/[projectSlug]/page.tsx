@@ -14,11 +14,11 @@ import css from './project.module.css'
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { state } = useAppContext()
+	const { transitionImage, isTransitioning } = useTransition()
 	const language = state.language
 	const [project, setProject] = useState<ProjectEntry | null>(null)
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
-	const { preloadedImage } = useTransition()
 
 	useEffect(() => {
 		const fetchProject = async () => {
@@ -59,6 +59,22 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [project, language])
 
+	useEffect(() => {
+		if (isTransitioning) {
+			document.body.style.overflow = 'hidden'
+			window.scrollTo(0, 0)
+		} else {
+			window.scrollTo(0, 0)
+			document.body.style.overflow = ''
+		}
+		
+		return () => {
+			document.body.style.overflow = ''
+		}
+	}, [isTransitioning])
+
+	console.log('transitionImage', transitionImage)
+
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry)[]
@@ -91,19 +107,10 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 
 	return (
 		<section className={`${css.project} grid`}>
-			{preloadedImage ? (
+			{mainImgUrl && !transitionImage && (
 				<Image 
-					src={preloadedImage}
+					src={`https:${mainImgUrl}`}
 					alt={title} 
-					className={css.mainImg} 
-					width={800} 
-					height={600} 
-					priority={true}
-				/>
-			) : mainImgUrl && (
-				<Image 
-				src={`https:${mainImgUrl}`}
-				alt={title} 
 					className={css.mainImg} 
 					width={800} 
 					height={600} 

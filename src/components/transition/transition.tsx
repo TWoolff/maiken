@@ -3,54 +3,58 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTransition } from '@/services/transitionContext'
 import css from './transition.module.css'
+import { usePathname } from 'next/navigation'
 
 const Transition = () => {
   const { transitionImage, transitionBounds, finalBounds, setTransitionImage, setTransitionBounds, setFinalBounds } = useTransition()
   const [isAnimating, setIsAnimating] = useState(false)
+  const pathname = usePathname()
+  const isProjectPage = pathname.includes('/work/')
 
   useEffect(() => {
     if (transitionImage && transitionBounds) {
       setIsAnimating(true)
-      const timer = setTimeout(() => {
-        setTransitionImage(null)
-        setTransitionBounds(null)
-        setFinalBounds(null)
-        setIsAnimating(false)
-      }, 1100)
-      return () => clearTimeout(timer)
+      if (!isProjectPage) {
+        const timer = setTimeout(() => {
+          setTransitionImage(null)
+          setTransitionBounds(null)
+          setFinalBounds(null)
+          setIsAnimating(false)
+        }, 1100)
+        return () => clearTimeout(timer)
+      }
     }
-  }, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds, setFinalBounds])
+  }, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds, setFinalBounds, isProjectPage])
 
   if (!transitionImage || !transitionBounds) return null
 
   return (
     <AnimatePresence mode="wait">
-      {isAnimating && (
+      {(isAnimating || isProjectPage) && (
         <motion.div 
+          key={pathname}
           className={css.transitionWrapper}
           initial={{
             position: 'fixed',
-            top: transitionBounds.top,
-            left: transitionBounds.left,
-            width: transitionBounds.width,
-            height: transitionBounds.height,
+            top: isProjectPage ? 0 : transitionBounds.top,
+            left: isProjectPage ? 0 : transitionBounds.left,
+            width: isProjectPage ? '100vw' : transitionBounds.width,
+            height: isProjectPage ? '75vh' : transitionBounds.height,
             zIndex: 9999,
             opacity: 1
           }}
           animate={{
+            position: isProjectPage ? 'sticky' : 'fixed',
             top: finalBounds?.top ?? 0,
             left: finalBounds?.left ?? 0,
             width: finalBounds?.width ?? '100vw',
             height: finalBounds?.height ?? '100vh',
-            opacity: 1
-          }}
-          exit={{
+            zIndex: isProjectPage ? -1 : 9999,
             opacity: 1
           }}
           transition={{
             duration: 0.8,
-            ease: [0.645, 0.045, 0.355, 1.000],
-            opacity: { duration: 0.3, delay: 0.8 }
+            ease: [0.645, 0.045, 0.355, 1.000]
           }}
         >
           <motion.div 

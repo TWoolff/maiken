@@ -2,6 +2,11 @@
   display: grid;
   gap: 2rem; 
   width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
+  padding-top: 0;
 
   & article:not(.imageWrapper) {
     grid-column: 1 / 5;
@@ -35,6 +40,8 @@
   display: block;
   margin-left: 50%;
   transform: translateX(-50%);
+  position: sticky;
+  top: 0;
 }
 
 .titleContainer {
@@ -76,4 +83,14 @@
   @media (max-width: 768px) {
     grid-column: 1 / -1 !important;
   }
+}
+
+.transitionWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
 }
