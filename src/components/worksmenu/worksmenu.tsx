@@ -93,10 +93,13 @@ const WorksMenu: React.FC = () => {
 
 	const handleMouseEnter = (project: ProjectEntry) => {
 		setHoveredProject(project)
-		const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
-		if (mainImgUrl) {
+		const mainImgAsset = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US'] as any
+
+		if (mainImgAsset?.details?.image) {
 			const windowWidth = window.innerWidth
-			const aspectRatio = 0.75
+			const imageWidth = mainImgAsset.details.image.width
+			const imageHeight = mainImgAsset.details.image.height
+			const aspectRatio = imageHeight / imageWidth
 			const calculatedHeight = windowWidth * aspectRatio
 			
 			setFinalBounds({

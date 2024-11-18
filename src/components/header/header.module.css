@@ -2,7 +2,7 @@
   position: fixed;
   width: 100%;
   align-items: start;
-  z-index: 9999;
+  z-index: 999999;
   mix-blend-mode: difference;
   color: white;
 

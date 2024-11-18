@@ -10,11 +10,12 @@ const Transition = () => {
   const [isAnimating, setIsAnimating] = useState(false)
   const pathname = usePathname()
   const isProjectPage = pathname.includes('/work/')
+  const isNavigatingToNonProject = !pathname.includes('/work/') && transitionImage
 
   useEffect(() => {
     if (transitionImage && transitionBounds) {
       setIsAnimating(true)
-      if (!isProjectPage) {
+      if (!isProjectPage || isNavigatingToNonProject) {
         const timer = setTimeout(() => {
           setTransitionImage(null)
           setTransitionBounds(null)
@@ -24,13 +25,13 @@ const Transition = () => {
         return () => clearTimeout(timer)
       }
     }
-  }, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds, setFinalBounds, isProjectPage])
+  }, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds, setFinalBounds, isProjectPage, isNavigatingToNonProject])
 
   if (!transitionImage || !transitionBounds) return null
 
   return (
     <AnimatePresence mode="wait">
-      {(isAnimating || isProjectPage) && (
+      {(isAnimating || (isProjectPage && !isNavigatingToNonProject)) && (
         <motion.div 
           key={pathname}
           className={css.transitionWrapper}
