@@ -21,7 +21,7 @@ const Transition = () => {
 					setTransitionImage(null)
 					setTransitionBounds(null)
 					setFinalBounds(null)
-				}, 600)
+				}, 1000)
 				return () => clearTimeout(timer)
 			}
 		}
@@ -53,7 +53,7 @@ const Transition = () => {
 						opacity: 1,
 					}}
 					transition={{
-						duration: 0.4,
+						duration: 0.8,
 						ease: [0.645, 0.045, 0.355, 1.000],
 					}}
 				>

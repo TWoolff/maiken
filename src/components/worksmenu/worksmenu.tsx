@@ -3,10 +3,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAppContext } from '@/services/context'
 import { useTransition } from '@/services/transitionContext'
-import { useImagePreloader } from '@/hooks/useImagePreloader'
 import { findEntryById } from '@/utils/content'
 import { getLocalizedField } from '@/utils/localization'
 import { PageData, ProjectEntry, ProjectContent } from '@/types/types'
+import { useImagePreloader } from '@/hooks/useImagePreloader'
 import css from './worksmenu.module.css'
 
 const WorksMenu: React.FC = () => {
@@ -17,7 +17,8 @@ const WorksMenu: React.FC = () => {
 	const sectionRef = useRef<HTMLElement>(null)
 	const projectEntry = findEntryById(state.data as PageData[], currentNav, 'en-US')
 	const router = useRouter()
-	const { setTransitionImage, setTransitionBounds, setFinalBounds, setIsTransitioning } = useTransition()
+	const { setTransitionImage, setTransitionBounds, setFinalBounds, setIsTransitioning, preloadedImages } = useTransition()
+
 
 	const projects: ProjectEntry[] = useMemo(() => {
 		if (projectEntry?.fields && 'project' in projectEntry.fields) {
@@ -36,8 +37,6 @@ const WorksMenu: React.FC = () => {
 	}, [projects])
 
 	const [hoveredProject, setHoveredProject] = useState<ProjectEntry | null>(null)
-
-	const { preloadedImages } = useImagePreloader(sortedProjects)
 
 	useEffect(() => {
 		if (projects.length > 0) {
@@ -87,7 +86,7 @@ const WorksMenu: React.FC = () => {
 		
 		setTimeout(() => {
 			router.push(`/work/${projectSlug}`)
-		}, 400)
+		}, 800)
 	}
 
 	const handleMouseEnter = (project: ProjectEntry) => {
@@ -110,6 +109,8 @@ const WorksMenu: React.FC = () => {
 		}
 	}
 
+	useImagePreloader(sortedProjects)
+
 	return (
 		<section ref={sectionRef} className={`${css.worksmenu} grid space`}>
 			<nav ref={navRef}>
@@ -119,13 +120,16 @@ const WorksMenu: React.FC = () => {
 							const isActive = hoveredProject === project ? css.active : ''
 							const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-							if (!mainImgUrl || !preloadedImages.has(mainImgUrl)) return null
+							if (!preloadedImages.has(mainImgUrl!)) {
+								console.log('Skipping unloaded image:', mainImgUrl);
+								return null;
+							}
 
 							return (
 								<Link
 									href={`/work/${projectSlug}`}
 									key={i}
-									style={{ backgroundImage: `url(${preloadedImages.get(mainImgUrl)})` }}
+									style={{ backgroundImage: `url(${preloadedImages.get(mainImgUrl!)})` }}
 									className={isActive}
 									onMouseEnter={() => handleMouseEnter(project)}
 									onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}

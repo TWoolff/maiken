@@ -14,10 +14,9 @@ import css from './project.module.css'
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { state } = useAppContext()
-	const { transitionImage, isTransitioning } = useTransition()
+	const { transitionImage, isTransitioning, preloadedImages } = useTransition()
 	const language = state.language
 	const [project, setProject] = useState<ProjectEntry | null>(null)
-	//const [preloadedImages] = useState(() => new Map<string, string>())
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
 
@@ -108,7 +107,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		<section className={`${css.project} grid`}>
 			{mainImgUrl && (
 				<Image
-					src={`https:${mainImgUrl}`}
+					src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
 					alt={title}
 					className={css.mainImg}
 					width={800}
