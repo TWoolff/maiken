@@ -81,17 +81,14 @@ const WorksMenu: React.FC = () => {
 			height: rect.height
 		})
 		
-		setTransitionImage(preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`)
+		const imageUrl = preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`
+		setTransitionImage(imageUrl)
 		setIsTransitioning(true)
 		
 		setTimeout(() => {
 			router.push(`/work/${projectSlug}`)
-			window.scrollTo(0, 0)
-			setTimeout(() => {
-				window.scrollTo(0, 0)
-				setIsTransitioning(false)
-			}, 800)
-		}, 800)
+			setIsTransitioning(false)
+		}, 1000)
 	}
 
 	const handleMouseEnter = (project: ProjectEntry) => {
@@ -123,7 +120,7 @@ const WorksMenu: React.FC = () => {
 							const isActive = hoveredProject === project ? css.active : ''
 							const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-							if (!mainImgUrl || preloadedImages.has(mainImgUrl)) {
+							if (mainImgUrl && preloadedImages.has(mainImgUrl)) {
 								return (
 									<Link
 										href={`/work/${projectSlug}`}

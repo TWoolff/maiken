@@ -17,11 +17,13 @@ const Transition = () => {
       setIsAnimating(true)
       if (!isProjectPage || isNavigatingToNonProject) {
         const timer = setTimeout(() => {
-          setTransitionImage(null)
-          setTransitionBounds(null)
-          setFinalBounds(null)
           setIsAnimating(false)
-        }, 1100)
+          setTimeout(() => {
+            setTransitionImage(null)
+            setTransitionBounds(null)
+            setFinalBounds(null)
+          }, 100)
+        }, 1000)
         return () => clearTimeout(timer)
       }
     }
