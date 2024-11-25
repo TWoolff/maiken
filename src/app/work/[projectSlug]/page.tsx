@@ -17,6 +17,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { transitionImage, isTransitioning } = useTransition()
 	const language = state.language
 	const [project, setProject] = useState<ProjectEntry | null>(null)
+	const [preloadedImages] = useState(() => new Map<string, string>())
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
 
@@ -73,8 +74,6 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [isTransitioning])
 
-	console.log('transitionImage', transitionImage)
-
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
 	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry)[]
@@ -109,7 +108,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		<section className={`${css.project} grid`}>
 			{mainImgUrl && !transitionImage && (
 				<Image 
-					src={`https:${mainImgUrl}`}
+					src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
 					alt={title} 
 					className={css.mainImg} 
 					width={800} 

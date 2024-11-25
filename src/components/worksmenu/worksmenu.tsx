@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAppContext } from '@/services/context'
 import { useTransition } from '@/services/transitionContext'
+import { useImagePreloader } from '@/hooks/useImagePreloader'
 import { findEntryById } from '@/utils/content'
 import { getLocalizedField } from '@/utils/localization'
 import { PageData, ProjectEntry, ProjectContent } from '@/types/types'
@@ -35,6 +36,8 @@ const WorksMenu: React.FC = () => {
 	}, [projects])
 
 	const [hoveredProject, setHoveredProject] = useState<ProjectEntry | null>(null)
+
+	const { preloadedImages } = useImagePreloader(sortedProjects)
 
 	useEffect(() => {
 		if (projects.length > 0) {
@@ -78,7 +81,7 @@ const WorksMenu: React.FC = () => {
 			height: rect.height
 		})
 		
-		setTransitionImage(`https:${mainImgUrl}`)
+		setTransitionImage(preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`)
 		setIsTransitioning(true)
 		
 		setTimeout(() => {
@@ -120,16 +123,19 @@ const WorksMenu: React.FC = () => {
 							const isActive = hoveredProject === project ? css.active : ''
 							const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-							return (
-								<Link
-									href={`/work/${projectSlug}`}
-									key={i}
-									style={{ backgroundImage: mainImgUrl ? `url(https:${mainImgUrl})` : 'none' }}
-									className={isActive}
-									onMouseEnter={() => handleMouseEnter(project)}
-									onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}
-								/>
-							)
+							if (!mainImgUrl || preloadedImages.has(mainImgUrl)) {
+								return (
+									<Link
+										href={`/work/${projectSlug}`}
+										key={i}
+										style={{ backgroundImage: mainImgUrl ? `url(${preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`})` : 'none' }}
+										className={isActive}
+										onMouseEnter={() => handleMouseEnter(project)}
+										onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}
+									/>
+								)
+							}
+							return null
 						})
 					: null}
 			</nav>
