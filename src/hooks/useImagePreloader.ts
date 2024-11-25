@@ -31,27 +31,27 @@ export const useImagePreloader = (data: any) => {
 
   useEffect(() => {
     const preloadImages = async () => {
-      // Handle both direct project arrays and nested content
       const content = Array.isArray(data) ? data : data?.data?.[0]?.fields?.content?.['en-US'] || []
       const imageUrls = findImagesInContent(content)
       
-      // Filter out already loaded images
-      const newUrls = imageUrls.filter(url => !preloadedImages.has(url))
-      
-      if (newUrls.length === 0) return
-
-      const imagePromises = newUrls.map(url => {
+      // Preload all images immediately, regardless of cache status
+      const imagePromises = imageUrls.map(url => {
         if (!url) return null
         
         return new Promise((resolve) => {
           const img = new Image()
           img.src = `https:${url}`
-          img.onload = () => resolve({ url, loadedUrl: img.src })
+          
+          if (img.complete) {
+            resolve({ url, loadedUrl: img.src })
+          } else {
+            img.onload = () => resolve({ url, loadedUrl: img.src })
+          }
         })
       })
 
       const loadedImages = await Promise.all(imagePromises)
-      const newImageMap = new Map(preloadedImages) // Create copy of existing map
+      const newImageMap = new Map(preloadedImages)
       loadedImages.forEach((result: any) => {
         if (result) {
           newImageMap.set(result.url, result.loadedUrl)
@@ -61,11 +61,10 @@ export const useImagePreloader = (data: any) => {
       setPreloadedImages(newImageMap)
     }
 
-    // Remove the size check to allow loading new images
     if (data) {
       preloadImages()
     }
-  }, [data, setPreloadedImages, preloadedImages]) // Add preloadedImages to dependencies
+  }, [data, setPreloadedImages])
 
   return { preloadedImages }
 } 

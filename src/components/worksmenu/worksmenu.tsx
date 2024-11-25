@@ -68,25 +68,38 @@ const WorksMenu: React.FC = () => {
 
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, mainImgUrl: string, projectSlug: string) => {
 		e.preventDefault()
-		window.scrollTo(0, 0)
+		
+		// Ensure image is loaded before starting transition
+		const imageUrl = preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`
+		const img = new Image()
+		img.src = imageUrl
 		
 		const element = e.currentTarget
 		const rect = element.getBoundingClientRect()
 		
-		setTransitionBounds({
-			top: rect.top,
-			left: rect.left,
-			width: rect.width,
-			height: rect.height
-		})
-		
-		const imageUrl = preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`
-		setTransitionImage(imageUrl)
-		setIsTransitioning(true)
-		
-		setTimeout(() => {
-			router.push(`/work/${projectSlug}`)
-		}, 800)
+		const startTransition = () => {
+			window.scrollTo(0, 0)
+			setTransitionBounds({
+				top: rect.top,
+				left: rect.left,
+				width: rect.width,
+				height: rect.height
+			})
+			setTransitionImage(imageUrl)
+			setIsTransitioning(true)
+			
+			setTimeout(() => {
+				router.push(`/work/${projectSlug}`)
+			}, 800)
+		}
+
+		// If image is already cached, start transition immediately
+		if (img.complete) {
+			startTransition()
+		} else {
+			// Otherwise wait for image to load
+			img.onload = startTransition
+		}
 	}
 
 	const handleMouseEnter = (project: ProjectEntry) => {
