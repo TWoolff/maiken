@@ -62,10 +62,12 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	useEffect(() => {
 		if (isTransitioning) {
 			document.body.style.overflow = 'hidden'
-			window.scrollTo(0, 0)
+			window.scrollTo({ top: 0, behavior: 'instant' })
 		} else {
-			window.scrollTo(0, 0)
-			document.body.style.overflow = ''
+			setTimeout(() => {
+				window.scrollTo({ top: 0, behavior: 'instant' })
+				document.body.style.overflow = ''
+			}, 100)
 		}
 		
 		return () => {
@@ -107,6 +109,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		<section className={`${css.project} grid`}>
 			{mainImgUrl && (
 				<Image
+					key={mainImgUrl}
 					src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
 					alt={title}
 					className={css.mainImg}
