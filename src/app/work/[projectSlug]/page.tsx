@@ -60,19 +60,19 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 		}
 	}, [project, language])
 
-	useEffect(() => {
-		if (isTransitioning) {
-			document.body.style.overflow = 'hidden'
-			window.scrollTo(0, 0)
-		} else {
-			window.scrollTo(0, 0)
-			document.body.style.overflow = ''
-		}
+	// useEffect(() => {
+	// 	if (isTransitioning) {
+	// 		document.body.style.overflow = 'hidden'
+	// 		window.scrollTo(0, 0)
+	// 	} else {
+	// 		window.scrollTo(0, 0)
+	// 		document.body.style.overflow = ''
+	// 	}
 		
-		return () => {
-			document.body.style.overflow = ''
-		}
-	}, [isTransitioning])
+	// 	return () => {
+	// 		document.body.style.overflow = ''
+	// 	}
+	// }, [isTransitioning])
 
 	if (!project) return null
 	const title = getLocalizedField(project.fields.title, language) as string
