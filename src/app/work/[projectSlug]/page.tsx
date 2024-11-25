@@ -14,7 +14,7 @@ import css from './project.module.css'
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { state } = useAppContext()
-	const { transitionImage, isTransitioning } = useTransition()
+	const { transitionImage } = useTransition()
 	const language = state.language
 	const [project, setProject] = useState<ProjectEntry | null>(null)
 	const [preloadedImages] = useState(() => new Map<string, string>())
