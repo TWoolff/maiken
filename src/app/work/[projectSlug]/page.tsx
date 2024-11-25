@@ -108,21 +108,24 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	return (
 		<section className={`${css.project} grid`}>
 			{mainImgUrl && (
-				<Image
-					key={mainImgUrl}
-					src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
-					alt={title}
-					className={css.mainImg}
-					width={800}
-					height={600}
-					priority={true}
-					loading="eager"
-					onLoadingComplete={(img) => {
-						if (transitionImage) {
-							img.style.display = 'none'
-						}
-					}}
-				/>
+				<div style={{ position: 'relative' }}>
+					<Image
+						key={mainImgUrl}
+						src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
+						alt={title}
+						className={css.mainImg}
+						width={800}
+						height={600}
+						priority={true}
+						loading="eager"
+						style={{ 
+							position: transitionImage ? 'absolute' : 'relative',
+							visibility: transitionImage ? 'hidden' : 'visible',
+							top: 0,
+							left: 0,
+						}}
+					/>
+				</div>
 			)}
 			<div className={css.titleContainer}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
