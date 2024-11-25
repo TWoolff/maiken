@@ -16,15 +16,20 @@ const Transition = () => {
 		if (transitionImage && transitionBounds) {
 			setIsAnimating(true)
 			if (!isProjectPage || isNavigatingToNonProject) {
-				const timer = setTimeout(() => {
+				const animationTimer = setTimeout(() => {
 					setIsAnimating(false)
-					setTimeout(() => {
-						setTransitionImage(null)
-						setTransitionBounds(null)
-						setFinalBounds(null)
-					}, 100)
-				}, 1000)
-				return () => clearTimeout(timer)
+				}, 850)
+
+				const cleanupTimer = setTimeout(() => {
+					setTransitionImage(null)
+					setTransitionBounds(null)
+					setFinalBounds(null)
+				}, 1200)
+
+				return () => {
+					clearTimeout(animationTimer)
+					clearTimeout(cleanupTimer)
+				}
 			}
 		}
 	}, [transitionImage, transitionBounds, setTransitionImage, setTransitionBounds, setFinalBounds, isProjectPage, isNavigatingToNonProject])

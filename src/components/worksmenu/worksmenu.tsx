@@ -69,37 +69,27 @@ const WorksMenu: React.FC = () => {
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, mainImgUrl: string, projectSlug: string) => {
 		e.preventDefault()
 		
-		// Ensure image is loaded before starting transition
-		const imageUrl = preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`
-		const img = new Image()
-		img.src = imageUrl
+		if (!preloadedImages.has(mainImgUrl)) {
+			return
+		}
 		
+		const imageUrl = preloadedImages.get(mainImgUrl)!
 		const element = e.currentTarget
 		const rect = element.getBoundingClientRect()
 		
-		const startTransition = () => {
-			window.scrollTo(0, 0)
-			setTransitionBounds({
-				top: rect.top,
-				left: rect.left,
-				width: rect.width,
-				height: rect.height
-			})
-			setTransitionImage(imageUrl)
-			setIsTransitioning(true)
-			
-			setTimeout(() => {
-				router.push(`/work/${projectSlug}`)
-			}, 800)
-		}
-
-		// If image is already cached, start transition immediately
-		if (img.complete) {
-			startTransition()
-		} else {
-			// Otherwise wait for image to load
-			img.onload = startTransition
-		}
+		window.scrollTo(0, 0)
+		setTransitionBounds({
+			top: rect.top,
+			left: rect.left,
+			width: rect.width,
+			height: rect.height
+		})
+		setTransitionImage(imageUrl)
+		setIsTransitioning(true)
+		
+		setTimeout(() => {
+			router.push(`/work/${projectSlug}`)
+		}, 800)
 	}
 
 	const handleMouseEnter = (project: ProjectEntry) => {
@@ -130,22 +120,23 @@ const WorksMenu: React.FC = () => {
 				{Array.isArray(projects) && projects.length > 0
 					? sortedProjects.map((project, i) => {
 							const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US')
-							const isActive = hoveredProject === project ? css.active : ''
 							const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-							if (!preloadedImages.has(mainImgUrl!)) {
-								console.log('Skipping unloaded image:', mainImgUrl);
-								return null;
+							if (!mainImgUrl || !preloadedImages.has(mainImgUrl)) {
+								return null
 							}
 
 							return (
 								<Link
 									href={`/work/${projectSlug}`}
 									key={i}
-									style={{ backgroundImage: `url(${preloadedImages.get(mainImgUrl!)})` }}
-									className={isActive}
+									style={{ 
+										backgroundImage: `url(${preloadedImages.get(mainImgUrl)})`,
+										opacity: preloadedImages.has(mainImgUrl) ? 1 : 0 
+									}}
+									className={hoveredProject === project ? css.active : ''}
 									onMouseEnter={() => handleMouseEnter(project)}
-									onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}
+									onClick={(e) => projectSlug && handleClick(e, mainImgUrl, projectSlug)}
 								/>
 							)
 						})

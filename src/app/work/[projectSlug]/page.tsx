@@ -116,7 +116,12 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					width={800}
 					height={600}
 					priority={true}
-					style={{ display: transitionImage ? 'none' : 'block' }}
+					loading="eager"
+					onLoadingComplete={(img) => {
+						if (transitionImage) {
+							img.style.display = 'none'
+						}
+					}}
 				/>
 			)}
 			<div className={css.titleContainer}>
