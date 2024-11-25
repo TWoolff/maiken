@@ -1,6 +1,5 @@
 'use client'
 import { useEffect } from 'react'
-import { ProjectEntry } from '@/types/types'
 import { useTransition } from '@/services/transitionContext'
 
 const findImagesInContent = (content: any[]): string[] => {
