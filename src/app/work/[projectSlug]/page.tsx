@@ -17,7 +17,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	const { transitionImage, isTransitioning } = useTransition()
 	const language = state.language
 	const [project, setProject] = useState<ProjectEntry | null>(null)
-	const [preloadedImages] = useState(() => new Map<string, string>())
+	//const [preloadedImages] = useState(() => new Map<string, string>())
 	const svgRef = useRef<SVGSVGElement>(null)
 	const textRef = useRef<SVGTextElement>(null)
 
@@ -106,14 +106,15 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 
 	return (
 		<section className={`${css.project} grid`}>
-			{mainImgUrl && !transitionImage && (
-				<Image 
-					src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
-					alt={title} 
-					className={css.mainImg} 
-					width={800} 
-					height={600} 
+			{mainImgUrl && (
+				<Image
+					src={`https:${mainImgUrl}`}
+					alt={title}
+					className={css.mainImg}
+					width={800}
+					height={600}
 					priority={true}
+					style={{ display: transitionImage ? 'none' : 'block' }}
 				/>
 			)}
 			<div className={css.titleContainer}>

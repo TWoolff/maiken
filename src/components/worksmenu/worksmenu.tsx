@@ -87,8 +87,7 @@ const WorksMenu: React.FC = () => {
 		
 		setTimeout(() => {
 			router.push(`/work/${projectSlug}`)
-			setIsTransitioning(false)
-		}, 1000)
+		}, 400)
 	}
 
 	const handleMouseEnter = (project: ProjectEntry) => {
@@ -120,19 +119,18 @@ const WorksMenu: React.FC = () => {
 							const isActive = hoveredProject === project ? css.active : ''
 							const mainImgUrl = project?.fields?.mainImg?.['en-US']?.fields?.file?.['en-US']?.url
 
-							if (mainImgUrl && preloadedImages.has(mainImgUrl)) {
-								return (
-									<Link
-										href={`/work/${projectSlug}`}
-										key={i}
-										style={{ backgroundImage: mainImgUrl ? `url(${preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`})` : 'none' }}
-										className={isActive}
-										onMouseEnter={() => handleMouseEnter(project)}
-										onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}
-									/>
-								)
-							}
-							return null
+							if (!mainImgUrl || !preloadedImages.has(mainImgUrl)) return null
+
+							return (
+								<Link
+									href={`/work/${projectSlug}`}
+									key={i}
+									style={{ backgroundImage: `url(${preloadedImages.get(mainImgUrl)})` }}
+									className={isActive}
+									onMouseEnter={() => handleMouseEnter(project)}
+									onClick={(e) => mainImgUrl && projectSlug && handleClick(e, mainImgUrl, projectSlug)}
+								/>
+							)
 						})
 					: null}
 			</nav>
