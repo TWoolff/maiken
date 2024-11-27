@@ -108,7 +108,7 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 	return (
 		<section className={`${css.project} grid`}>
 			{mainImgUrl && (
-				<div style={{ position: 'relative' }}>
+				<div style={{ position: 'relative', width: '100vw' }}>
 					<Image
 						key={mainImgUrl}
 						src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
