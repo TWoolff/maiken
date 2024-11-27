@@ -8,6 +8,8 @@ interface TextContentProps {
 }
 
 const TextContent = ({ content, language, index }: TextContentProps) => {
+	const textAlign = content.fields.textAlign['en-US']
+
 	return (
 		<article className={`${css.textContainer} space`} style={{ gridRow: index + 2 }}>
 			{content.fields.text[language]?.content.map((node: RichTextDocument['content'][0], i: number) => {
@@ -63,8 +65,10 @@ const TextContent = ({ content, language, index }: TextContentProps) => {
 									<span
 										key={tIndex}
 										style={{
+											display: 'block',
 											fontWeight: isBold ? 'bold' : 'normal',
 											fontStyle: isItalic ? 'italic' : 'normal',
+											textAlign: textAlign ? 'left' : 'right',
 										}}
 									>
 										{text}

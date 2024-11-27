@@ -46,6 +46,7 @@ export interface TextContentEntry extends BaseEntry {
 	fields: {
 		id: LocalizedFields<string>
 		text: LocalizedFields<RichTextDocument>
+		textAlign: LocalizedFields<boolean>
 	}
 }
 
