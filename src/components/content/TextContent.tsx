@@ -8,7 +8,7 @@ interface TextContentProps {
 }
 
 const TextContent = ({ content, language, index }: TextContentProps) => {
-	const textAlign = content.fields.textAlign['en-US']
+	const textAlign = content.fields.textAlign?.['en-US'] ?? true
 
 	return (
 		<article className={`${css.textContainer} space`} style={{ gridRow: index + 2 }}>
