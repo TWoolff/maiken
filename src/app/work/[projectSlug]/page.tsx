@@ -13,7 +13,11 @@ import VideoContent from '@/components/content/VideoContent';
 import ImageDoubleContent from '@/components/content/ImageDoubleContent';
 import css from './project.module.css';
 
-const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
+interface PageProps {
+	params: Promise<{ projectSlug: string }>;
+}
+
+const ProjectPage = ({ params }: PageProps) => {
 	const { state } = useAppContext();
 	const { transitionImage, isTransitioning, preloadedImages } = useTransition();
 	const language = state.language;
