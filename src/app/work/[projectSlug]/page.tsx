@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import { use, useEffect, useState, useRef } from 'react';
 import { unstable_ViewTransition as ViewTransition } from 'react';
 import Image from 'next/image';
 import { findEntryBySlug } from '@/services/contentful';
@@ -24,7 +24,7 @@ const ProjectPage = ({ params }: PageProps) => {
 	const [project, setProject] = useState<ProjectEntry | null>(null);
 	const svgRef = useRef<SVGSVGElement>(null);
 	const textRef = useRef<SVGTextElement>(null);
-	const projectSlug = React.use(params).projectSlug;
+	const projectSlug = use(params).projectSlug;
 
 	useEffect(() => {
 		const fetchProject = async () => {

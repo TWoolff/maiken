@@ -128,11 +128,13 @@ const WorksMenu: React.FC = () => {
 								return null;
 							}
 
+							const preloadedSrc = preloadedImages.get(mainImgUrl);
+
 							return (
 								<Link
 									href={`/work/${projectSlug}`}
 									style={{
-										backgroundImage: `url(${preloadedImages.get(mainImgUrl)})`,
+										backgroundImage: `url(${preloadedSrc})`,
 										opacity: preloadedImages.has(mainImgUrl) ? 1 : 0,
 									}}
 									className={hoveredProject === project ? css.active : ''}
@@ -141,16 +143,18 @@ const WorksMenu: React.FC = () => {
 									key={i}
 								>
 									<ViewTransition name={`work-${projectSlug}`}>
-										<Image
-											src={preloadedImages.get(mainImgUrl)}
-											alt={project.fields.title['en-US']}
-											width={400}
-											height={300}
-											style={{
-												objectFit: 'cover',
-												opacity: preloadedImages.has(mainImgUrl) ? 1 : 0,
-											}}
-										/>
+										{preloadedSrc && (
+											<Image
+												src={preloadedSrc as string}
+												alt={project.fields.title['en-US']}
+												width={400}
+												height={300}
+												style={{
+													objectFit: 'cover',
+													opacity: preloadedImages.has(mainImgUrl) ? 1 : 0,
+												}}
+											/>
+										)}
 									</ViewTransition>
 								</Link>
 							);
