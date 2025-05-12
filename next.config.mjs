@@ -3,6 +3,9 @@ const nextConfig = {
 	images: {
 		remotePatterns: [{ hostname: 'images.ctfassets.net' }],
 	},
+	experimental: {
+		viewTransition: true,
+	},
 }
 
 export default nextConfig

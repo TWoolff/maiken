@@ -1,114 +1,128 @@
-'use client'
-import { useEffect, useState, useRef } from 'react'
-import Image from 'next/image'
-import { findEntryBySlug } from '@/services/contentful'
-import { useAppContext } from '@/services/context'
-import { useTransition } from '@/services/transitionContext'
-import { getLocalizedField } from '@/utils/localization'
-import { ImageEntry, ProjectEntry, TextContentEntry, VideoEntry, ImageDoubleEntry } from '@/types/types'
-import TextContent from '@/components/content/TextContent'
-import ImageContent from '@/components/content/ImageContent'
-import VideoContent from '@/components/content/VideoContent'
-import ImageDoubleContent from '@/components/content/ImageDoubleContent'
-import css from './project.module.css'
+'use client';
+import React, { useEffect, useState, useRef } from 'react';
+import { unstable_ViewTransition as ViewTransition } from 'react';
+import Image from 'next/image';
+import { findEntryBySlug } from '@/services/contentful';
+import { useAppContext } from '@/services/context';
+import { useTransition } from '@/services/transitionContext';
+import { getLocalizedField } from '@/utils/localization';
+import { ImageEntry, ProjectEntry, TextContentEntry, VideoEntry, ImageDoubleEntry } from '@/types/types';
+import TextContent from '@/components/content/TextContent';
+import ImageContent from '@/components/content/ImageContent';
+import VideoContent from '@/components/content/VideoContent';
+import ImageDoubleContent from '@/components/content/ImageDoubleContent';
+import css from './project.module.css';
 
 const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
-	const { state } = useAppContext()
-	const { transitionImage, isTransitioning, preloadedImages } = useTransition()
-	const language = state.language
-	const [project, setProject] = useState<ProjectEntry | null>(null)
-	const svgRef = useRef<SVGSVGElement>(null)
-	const textRef = useRef<SVGTextElement>(null)
+	const { state } = useAppContext();
+	const { transitionImage, isTransitioning, preloadedImages } = useTransition();
+	const language = state.language;
+	const [project, setProject] = useState<ProjectEntry | null>(null);
+	const svgRef = useRef<SVGSVGElement>(null);
+	const textRef = useRef<SVGTextElement>(null);
+	const projectSlug = React.use(params).projectSlug;
 
 	useEffect(() => {
 		const fetchProject = async () => {
-			const projectData = await findEntryBySlug(params.projectSlug)
-			setProject(projectData)
-		}
+			const projectData = await findEntryBySlug(projectSlug);
+			setProject(projectData);
+		};
 
-		fetchProject()
-	}, [params.projectSlug])
+		fetchProject();
+	}, [projectSlug]);
 
 	useEffect(() => {
 		const adjustTextSize = () => {
 			if (svgRef.current && textRef.current) {
-				const isMobile = window.innerWidth < 768
-				const padding = isMobile ? `${1.5}rem` : `${3}rem`
+				const isMobile = window.innerWidth < 768;
+				const padding = isMobile ? `${1.5}rem` : `${3}rem`;
 
 				const remToPx = (rem: string) => {
-					const baseFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize)
-					return parseFloat(rem) * baseFontSize
-				}
+					const baseFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+					return parseFloat(rem) * baseFontSize;
+				};
 
-				const paddingPx = remToPx(padding) * 2
-				const svgWidth = svgRef.current.clientWidth - paddingPx
-				const textWidth = textRef.current.getBBox().width
-				const scale = (svgWidth / textWidth) * 1
+				const paddingPx = remToPx(padding) * 2;
+				const svgWidth = svgRef.current.clientWidth - paddingPx;
+				const textWidth = textRef.current.getBBox().width;
+				const scale = (svgWidth / textWidth) * 1;
 
-				textRef.current.style.transform = `scale(${scale})`
+				textRef.current.style.transform = `scale(${scale})`;
 			}
-		}
+		};
 
 		if (project) {
-			adjustTextSize()
-			window.addEventListener('resize', adjustTextSize)
+			adjustTextSize();
+			window.addEventListener('resize', adjustTextSize);
 		}
 
 		return () => {
-			window.removeEventListener('resize', adjustTextSize)
-		}
-	}, [project, language])
+			window.removeEventListener('resize', adjustTextSize);
+		};
+	}, [project, language]);
 
 	useEffect(() => {
 		if (isTransitioning) {
-			document.body.style.overflow = 'hidden'
-			window.scrollTo({ top: 0, behavior: 'instant' })
+			document.body.style.overflow = 'hidden';
+			window.scrollTo({ top: 0, behavior: 'instant' });
 		} else {
 			setTimeout(() => {
-				window.scrollTo({ top: 0, behavior: 'instant' })
-				document.body.style.overflow = ''
-			}, 100)
+				window.scrollTo({ top: 0, behavior: 'instant' });
+				document.body.style.overflow = '';
+			}, 100);
 		}
-		
-		return () => {
-			document.body.style.overflow = ''
-		}
-	}, [isTransitioning])
 
-	if (!project) return null
-	const title = getLocalizedField(project.fields.title, language) as string
-	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry)[]
-	const mainImgUrl = project.fields.mainImg?.['en-US'].fields.file?.['en-US'].url
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [isTransitioning]);
+
+	if (!project) return null;
+	const title = getLocalizedField(project.fields.title, language) as string;
+	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (
+		| ProjectEntry
+		| ImageEntry
+		| TextContentEntry
+		| VideoEntry
+		| ImageDoubleEntry
+	)[];
+	const mainImgUrl = project.fields.mainImg?.['en-US'].fields.file?.['en-US'].url;
 
 	const isImageDoubleEntry = (entry: any): entry is ImageDoubleEntry => {
-		return 'fields' in entry && 'imageLeft' in entry.fields && 'imageRight' in entry.fields && 'spacing' in entry.fields && entry.sys.contentType.sys.id === 'imageDouble'
-	}
+		return (
+			'fields' in entry &&
+			'imageLeft' in entry.fields &&
+			'imageRight' in entry.fields &&
+			'spacing' in entry.fields &&
+			entry.sys.contentType.sys.id === 'imageDouble'
+		);
+	};
 
 	const renderContent = (entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, index: number) => {
-		if (!('sys' in entry) || !('contentType' in entry.sys)) return null
+		if (!('sys' in entry) || !('contentType' in entry.sys)) return null;
 
-		const contentType = entry.sys.contentType.sys.id
+		const contentType = entry.sys.contentType.sys.id;
 		switch (contentType) {
 			case 'text':
-				return <TextContent key={index} content={entry as TextContentEntry} language={language} index={index} />
+				return <TextContent key={index} content={entry as TextContentEntry} language={language} index={index} />;
 			case 'image':
-				return <ImageContent key={index} content={entry as ImageEntry} />
+				return <ImageContent key={index} content={entry as ImageEntry} />;
 			case 'imageDouble':
 				if (isImageDoubleEntry(entry)) {
-					return <ImageDoubleContent key={index} content={entry} />
+					return <ImageDoubleContent key={index} content={entry} />;
 				}
-				return null
+				return null;
 			case 'video':
-				return <VideoContent key={index} content={entry as VideoEntry} index={index} />
+				return <VideoContent key={index} content={entry as VideoEntry} index={index} />;
 			default:
-				return null
+				return null;
 		}
-	}
+	};
 
 	return (
 		<section className={`${css.project} grid`}>
 			{mainImgUrl && (
-				<div className={css.mainImgWrapper}>
+				<ViewTransition name={`work-${project.fields.slug}`}>
 					<Image
 						key={mainImgUrl}
 						src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
@@ -117,15 +131,15 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 						width={800}
 						height={600}
 						priority={true}
-						loading="eager"
-						style={{ 
+						loading='eager'
+						style={{
 							position: transitionImage ? 'absolute' : 'relative',
 							visibility: transitionImage ? 'hidden' : 'visible',
 							top: 0,
 							left: 0,
 						}}
 					/>
-				</div>
+				</ViewTransition>
 			)}
 			<div className={css.titleContainer}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
@@ -134,9 +148,11 @@ const ProjectPage = ({ params }: { params: { projectSlug: string } }) => {
 					</text>
 				</svg>
 			</div>
-			{contentEntries.length === 0 ? null : contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, i: number) => renderContent(entry, i))}
+			{contentEntries.length === 0
+				? null
+				: contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, i: number) => renderContent(entry, i))}
 		</section>
-	)
-}
+	);
+};
 
-export default ProjectPage
+export default ProjectPage;
