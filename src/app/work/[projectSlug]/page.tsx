@@ -22,6 +22,7 @@ const ProjectPage = ({ params }: PageProps) => {
 	const { transitionImage, isTransitioning, preloadedImages } = useTransition();
 	const language = state.language;
 	const [project, setProject] = useState<ProjectEntry | null>(null);
+	const [imageLoaded, setImageLoaded] = useState(false);
 	const svgRef = useRef<SVGSVGElement>(null);
 	const textRef = useRef<SVGTextElement>(null);
 	const projectSlug = use(params).projectSlug;
@@ -34,6 +35,19 @@ const ProjectPage = ({ params }: PageProps) => {
 
 		fetchProject();
 	}, [projectSlug]);
+
+	// Preload the main image to prevent blinking
+	useEffect(() => {
+		if (project) {
+			const mainImgUrl = project.fields.mainImg?.['en-US'].fields.file?.['en-US'].url;
+			if (mainImgUrl) {
+				const imageUrl = preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`;
+				const img = document.createElement('img');
+				img.onload = () => setImageLoaded(true);
+				img.src = imageUrl;
+			}
+		}
+	}, [project, preloadedImages]);
 
 	useEffect(() => {
 		const adjustTextSize = () => {
@@ -125,8 +139,8 @@ const ProjectPage = ({ params }: PageProps) => {
 
 	return (
 		<section className={`${css.project} grid`}>
-			{mainImgUrl && (
-				<ViewTransition name={`work-${project.fields.slug}`}>
+			{mainImgUrl && imageLoaded && (
+				<ViewTransition name={`work-${projectSlug}`}>
 					<Image
 						key={mainImgUrl}
 						src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}

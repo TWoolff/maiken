@@ -89,6 +89,7 @@ const WorksMenu: React.FC = () => {
 		setTransitionImage(imageUrl);
 		setIsTransitioning(true);
 
+		// Wait for the animation to complete before navigating
 		setTimeout(() => {
 			router.push(`/work/${projectSlug}`);
 		}, 800);

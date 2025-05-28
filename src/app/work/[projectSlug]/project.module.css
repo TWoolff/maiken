@@ -7,6 +7,10 @@
   overflow: hidden;
   margin-top: 0;
   padding-top: 0;
+  /* Prevent layout shift during transition */
+  contain: layout style paint;
+  /* Ensure immediate rendering */
+  will-change: transform;
 
   & article:not(.imageWrapper) {
     grid-column: 1 / 5;
@@ -35,6 +39,8 @@
   position: relative;
   grid-column: 1 / -1;
   grid-row: 1;
+  /* Optimize for view transitions */
+  contain: layout style paint;
 }
 
 .mainImg {
@@ -48,6 +54,11 @@
   transform: translateX(-50%);
   position: sticky;
   top: 0;
+  /* Optimize for view transitions */
+  will-change: transform, opacity;
+  /* Ensure smooth rendering */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .titleContainer {
