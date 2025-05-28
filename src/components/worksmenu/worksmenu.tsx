@@ -79,6 +79,9 @@ const WorksMenu: React.FC = () => {
 		const element = e.currentTarget;
 		const rect = element.getBoundingClientRect();
 
+		// Prefetch the route to ensure it's ready
+		router.prefetch(`/work/${projectSlug}`);
+
 		window.scrollTo(0, 0);
 		setTransitionBounds({
 			top: rect.top,
@@ -113,9 +116,25 @@ const WorksMenu: React.FC = () => {
 				height: calculatedHeight,
 			});
 		}
+
+		// Prefetch the route on hover for faster navigation
+		const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US');
+		if (projectSlug) {
+			router.prefetch(`/work/${projectSlug}`);
+		}
 	};
 
 	useImagePreloader(sortedProjects);
+
+	// Preload all project routes for faster navigation
+	useEffect(() => {
+		sortedProjects.forEach((project) => {
+			const projectSlug = getLocalizedField(project?.fields?.slug, 'en-US');
+			if (projectSlug) {
+				router.prefetch(`/work/${projectSlug}`);
+			}
+		});
+	}, [sortedProjects, router]);
 
 	return (
 		<section ref={sectionRef} className={`${css.worksmenu} grid space`}>

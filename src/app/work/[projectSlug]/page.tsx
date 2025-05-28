@@ -139,24 +139,39 @@ const ProjectPage = ({ params }: PageProps) => {
 
 	return (
 		<section className={`${css.project} grid`}>
-			{mainImgUrl && imageLoaded && (
+			{mainImgUrl && (
 				<ViewTransition name={`work-${projectSlug}`}>
-					<Image
-						key={mainImgUrl}
-						src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
-						alt={title}
-						className={css.mainImg}
-						width={800}
-						height={600}
-						priority={true}
-						loading='eager'
-						style={{
-							position: transitionImage ? 'absolute' : 'relative',
-							visibility: transitionImage ? 'hidden' : 'visible',
-							top: 0,
-							left: 0,
-						}}
-					/>
+					{imageLoaded ? (
+						<Image
+							key={mainImgUrl}
+							src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
+							alt={title}
+							className={css.mainImg}
+							width={800}
+							height={600}
+							priority={true}
+							loading='eager'
+							style={{
+								position: transitionImage ? 'absolute' : 'relative',
+								visibility: transitionImage ? 'hidden' : 'visible',
+								top: 0,
+								left: 0,
+							}}
+						/>
+					) : (
+						<div
+							className={css.mainImg}
+							style={{
+								backgroundColor: '#f0f0f0',
+								position: transitionImage ? 'absolute' : 'relative',
+								visibility: transitionImage ? 'hidden' : 'visible',
+								top: 0,
+								left: 0,
+								width: '100vw',
+								height: '60vh',
+							}}
+						/>
+					)}
 				</ViewTransition>
 			)}
 			<div className={css.titleContainer}>
