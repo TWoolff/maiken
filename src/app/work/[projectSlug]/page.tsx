@@ -70,14 +70,17 @@ const ProjectPage = ({ params }: PageProps) => {
 		};
 
 		if (project) {
-			adjustTextSize();
+			// Use requestAnimationFrame to ensure DOM is ready for text scaling
+			requestAnimationFrame(() => {
+				adjustTextSize();
+			});
 			window.addEventListener('resize', adjustTextSize);
 		}
 
 		return () => {
 			window.removeEventListener('resize', adjustTextSize);
 		};
-	}, [project, language]);
+	}, [project]);
 
 	useEffect(() => {
 		if (isTransitioning) {
@@ -138,42 +141,49 @@ const ProjectPage = ({ params }: PageProps) => {
 	};
 
 	return (
-		<section className={`${css.project} grid`}>
-			{mainImgUrl && (
-				<ViewTransition name={`work-${projectSlug}`}>
-					{imageLoaded ? (
-						<Image
-							key={mainImgUrl}
-							src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
-							alt={title}
-							className={css.mainImg}
-							width={800}
-							height={600}
-							priority={true}
-							loading='eager'
-							style={{
-								position: transitionImage ? 'absolute' : 'relative',
-								visibility: transitionImage ? 'hidden' : 'visible',
-								top: 0,
-								left: 0,
-							}}
-						/>
-					) : (
-						<div
-							className={css.mainImg}
-							style={{
-								backgroundColor: '#f0f0f0',
-								position: transitionImage ? 'absolute' : 'relative',
-								visibility: transitionImage ? 'hidden' : 'visible',
-								top: 0,
-								left: 0,
-								width: '100vw',
-								height: '60vh',
-							}}
-						/>
-					)}
-				</ViewTransition>
-			)}
+		<>
+			<section className={`${css.project} grid`}>
+				{mainImgUrl && (
+					<ViewTransition name={`work-${projectSlug}`}>
+						{imageLoaded ? (
+							<Image
+								key={mainImgUrl}
+								src={preloadedImages.get(mainImgUrl) || `https:${mainImgUrl}`}
+								alt={title}
+								className={css.mainImg}
+								width={800}
+								height={600}
+								priority={true}
+								loading='eager'
+								style={{
+									position: transitionImage ? 'absolute' : 'relative',
+									visibility: transitionImage ? 'hidden' : 'visible',
+									top: 0,
+									left: 0,
+								}}
+							/>
+						) : (
+							<div
+								className={css.mainImg}
+								style={{
+									backgroundColor: '#f0f0f0',
+									position: transitionImage ? 'absolute' : 'relative',
+									visibility: transitionImage ? 'hidden' : 'visible',
+									top: 0,
+									left: 0,
+									width: '100vw',
+									height: '60vh',
+								}}
+							/>
+						)}
+					</ViewTransition>
+				)}
+				<div className={css.contentContainer}>
+					{contentEntries.length === 0
+						? null
+						: contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, i: number) => renderContent(entry, i))}
+				</div>
+			</section>
 			<div className={css.titleContainer}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
 					<text ref={textRef} x='50%' y='50%' dominantBaseline='middle' textAnchor='middle' className={css.titleText}>
@@ -181,10 +191,7 @@ const ProjectPage = ({ params }: PageProps) => {
 					</text>
 				</svg>
 			</div>
-			{contentEntries.length === 0
-				? null
-				: contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, i: number) => renderContent(entry, i))}
-		</section>
+		</>
 	);
 };
 
