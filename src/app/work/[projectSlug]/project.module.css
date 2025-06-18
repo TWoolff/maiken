@@ -7,6 +7,7 @@
   overflow: hidden;
   margin-top: 0;
   padding-top: 0;
+  z-index: 1;
   /* Prevent layout shift during transition */
   contain: layout style paint;
   /* Ensure immediate rendering */
@@ -51,7 +52,7 @@
 .mainImg {
   grid-column: 1 / -1;
   grid-row: 1;
-  z-index: -1;
+  z-index: 1;
   width: 100vw;
   height: auto;
   display: block;
@@ -73,7 +74,6 @@
   top: 50vh !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
-  z-index: 1;
   pointer-events: none !important;
   width: 100vw !important;
   height: 100% !important;
@@ -108,7 +108,7 @@
 .imageWrapper {
   @media (max-width: 768px) {
     grid-column: 1 / -1 !important;
-    z-index: 999;
+    z-index: 3;
   }
 }
 
@@ -124,10 +124,9 @@
 
 .contentContainer {
   grid-column: 1 / -1;
-  grid-row: 2;
   display: grid;
   grid-template-columns: subgrid;
   gap: 2rem;
   margin-top: 2rem;
-  z-index: 9999;
+  z-index: 10;
 }

@@ -23,8 +23,10 @@ const ProjectPage = ({ params }: PageProps) => {
 	const language = state.language;
 	const [project, setProject] = useState<ProjectEntry | null>(null);
 	const [imageLoaded, setImageLoaded] = useState(false);
+	const [titleZIndex, setTitleZIndex] = useState(100);
 	const svgRef = useRef<SVGSVGElement>(null);
 	const textRef = useRef<SVGTextElement>(null);
+	const contentContainerRef = useRef<HTMLDivElement>(null);
 	const projectSlug = use(params).projectSlug;
 
 	useEffect(() => {
@@ -35,6 +37,8 @@ const ProjectPage = ({ params }: PageProps) => {
 
 		fetchProject();
 	}, [projectSlug]);
+
+	console.log(project);
 
 	// Preload the main image to prevent blinking
 	useEffect(() => {
@@ -98,6 +102,34 @@ const ProjectPage = ({ params }: PageProps) => {
 		};
 	}, [isTransitioning]);
 
+	// Dynamic z-index control for title based on scroll position
+	useEffect(() => {
+		const handleScroll = () => {
+			if (contentContainerRef.current) {
+				const contentRect = contentContainerRef.current.getBoundingClientRect();
+				const viewportHeight = window.innerHeight;
+				const titlePosition = viewportHeight / 2; // Title is centered vertically
+
+				// If title overlaps with content area, put it behind content
+				// If title is only over main image area, put it above main image
+				if (contentRect.top < titlePosition && contentRect.bottom > titlePosition) {
+					// Title is overlapping with content - put behind content
+					setTitleZIndex(-1);
+				} else {
+					// Title is only over main image - put above main image but below content
+					setTitleZIndex(100);
+				}
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		handleScroll(); // Initial check
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, [project]);
+
 	if (!project) return null;
 	const title = getLocalizedField(project.fields.title, language) as string;
 	const contentEntries = (project.fields.content?.['en-US'] || []) as unknown as (
@@ -107,6 +139,7 @@ const ProjectPage = ({ params }: PageProps) => {
 		| VideoEntry
 		| ImageDoubleEntry
 	)[];
+
 	const mainImgUrl = project.fields.mainImg?.['en-US'].fields.file?.['en-US'].url;
 
 	const isImageDoubleEntry = (entry: any): entry is ImageDoubleEntry => {
@@ -123,9 +156,10 @@ const ProjectPage = ({ params }: PageProps) => {
 		if (!('sys' in entry) || !('contentType' in entry.sys)) return null;
 
 		const contentType = entry.sys.contentType.sys.id;
+
 		switch (contentType) {
 			case 'text':
-				return <TextContent key={index} content={entry as TextContentEntry} language={language} index={index} />;
+				return <TextContent key={index} content={entry as TextContentEntry} language={language} />;
 			case 'image':
 				return <ImageContent key={index} content={entry as ImageEntry} />;
 			case 'imageDouble':
@@ -134,7 +168,7 @@ const ProjectPage = ({ params }: PageProps) => {
 				}
 				return null;
 			case 'video':
-				return <VideoContent key={index} content={entry as VideoEntry} index={index} />;
+				return <VideoContent key={index} content={entry as VideoEntry} />;
 			default:
 				return null;
 		}
@@ -178,13 +212,13 @@ const ProjectPage = ({ params }: PageProps) => {
 						)}
 					</ViewTransition>
 				)}
-				<div className={css.contentContainer}>
+				<div ref={contentContainerRef} className={css.contentContainer}>
 					{contentEntries.length === 0
 						? null
 						: contentEntries.map((entry: ProjectEntry | ImageEntry | TextContentEntry | VideoEntry | ImageDoubleEntry, i: number) => renderContent(entry, i))}
 				</div>
 			</section>
-			<div className={css.titleContainer}>
+			<div className={css.titleContainer} style={{ zIndex: titleZIndex }}>
 				<svg ref={svgRef} width='100%' height='100%' preserveAspectRatio='xMidYMid meet'>
 					<text ref={textRef} x='50%' y='50%' dominantBaseline='middle' textAnchor='middle' className={css.titleText}>
 						{title}
