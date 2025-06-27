@@ -1,38 +1,38 @@
-'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useAppContext } from '@/services/context'
-import { findEntryById } from '@/utils/content'
-import { getLocalizedTextContent } from '@/utils/localization'
-import { PageData, RichTextDocument } from '@/types/types'
-import Toggle from '@/components/formelements/toggle'
-import css from './header.module.css'
-import { useTransition } from '@/services/transitionContext'
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useAppContext } from '@/services/context';
+import { findEntryById } from '@/utils/content';
+import { getLocalizedTextContent } from '@/utils/localization';
+import { PageData, RichTextDocument } from '@/types/types';
+//import Toggle from '@/components/formelements/toggle';
+import { useTransition } from '@/services/transitionContext';
+import css from './header.module.css';
 
 const Header: React.FC = () => {
-	const pathname = usePathname()
-	const { state, dispatch } = useAppContext()
-	const { setTransitionImage, setTransitionBounds, setFinalBounds, setIsTransitioning } = useTransition()
-	const pages = state.data
-	const language = state.language
-	const introTextEntry = findEntryById(pages as PageData[], 'Intro', 'en-US')
-	const introTextContent = getLocalizedTextContent(introTextEntry, language) as RichTextDocument | null
+	const pathname = usePathname();
+	const { state } = useAppContext(); // add dispatch back
+	const { setTransitionImage, setTransitionBounds, setFinalBounds, setIsTransitioning } = useTransition();
+	const pages = state.data;
+	const language = state.language;
+	const introTextEntry = findEntryById(pages as PageData[], 'Intro', 'en-US');
+	const introTextContent = getLocalizedTextContent(introTextEntry, language) as RichTextDocument | null;
 
 	const clearTransitionStates = () => {
-		setTransitionImage(null)
-		setTransitionBounds(null)
-		setFinalBounds(null)
-		setIsTransitioning(false)
-	}
+		setTransitionImage(null);
+		setTransitionBounds(null);
+		setFinalBounds(null);
+		setIsTransitioning(false);
+	};
 
-	const handleLangChange = () => {
-		dispatch({ type: 'TOGGLE_LANGUAGE', payload: { language: state.language === 'da-DK' ? 'en-US' : 'da-DK' } })
-	}
+	// const handleLangChange = () => {
+	// 	dispatch({ type: 'TOGGLE_LANGUAGE', payload: { language: state.language === 'da-DK' ? 'en-US' : 'da-DK' } });
+	// };
 
-	const handleNavClick = (nav: string) => {
-		clearTransitionStates()
-		dispatch({ type: 'SET_NAV', payload: nav })
-	}
+	// const handleNavClick = (nav: string) => {
+	// 	clearTransitionStates();
+	// 	dispatch({ type: 'SET_NAV', payload: nav });
+	// };
 
 	return (
 		<header className={`${css.header} grid space`} data-pathname={pathname}>
@@ -40,7 +40,7 @@ const Header: React.FC = () => {
 				MAIKEN VIBE BAUER
 			</Link>
 			<nav>
-				<Link href='/' onClick={() => handleNavClick('Work')}>
+				{/* <Link href='/' onClick={() => handleNavClick('Work')}>
 					{state.language === 'da-DK' ? 'Arbejder' : 'Work'}
 				</Link>
 				<Link href='/' onClick={() => handleNavClick('Collaborations')}>
@@ -51,8 +51,8 @@ const Header: React.FC = () => {
 				</Link>
 				<Link href='/contact' onClick={clearTransitionStates}>
 					{state.language === 'da-DK' ? 'Kontakt' : 'Contact'}
-				</Link>
-				<Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' className={css.headerToggle} />
+				</Link> 
+				<Toggle onChange={handleLangChange} labelLeft='da' labelRight='en' className={css.headerToggle} /> */}
 			</nav>
 			{introTextContent && (
 				<div className={css.intro}>
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
 				</div>
 			)}
 		</header>
-	)
-}
+	);
+};
 
-export default Header
+export default Header;

@@ -1,71 +1,71 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { useAppContext } from '@/services/context'
-import { getPage } from '@/services/contentful'
-import { getLocalizedField } from '@/utils/localization'
-import { ContactEntry, PageData, RichTextContent, NodeData, RichTextDocument, TextNode, HyperlinkNode } from '@/types/types'
-import Loader from '@/components/loader/loader'
-import css from './contact.module.css'
+'use client';
+import { useEffect, useState } from 'react';
+import { useAppContext } from '@/services/context';
+import { getPage } from '@/services/contentful';
+import { getLocalizedField } from '@/utils/localization';
+import { ContactEntry, PageData, RichTextContent, NodeData, RichTextDocument, TextNode, HyperlinkNode } from '@/types/types';
+import Loader from '@/components/loader/loader';
+import css from './contact.module.css';
 
 const Contact: React.FC = () => {
-	const { state } = useAppContext()
-	const [contactData, setContactData] = useState<PageData | null>(null)
-	const [loading, setLoading] = useState<boolean>(true)
-	const [error, setError] = useState<string | null>(null)
-	const language = state.language
+	const { state } = useAppContext();
+	const [contactData, setContactData] = useState<PageData | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<string | null>(null);
+	const language = state.language;
 
 	useEffect(() => {
-		let contactPageData = Array.isArray(state.data) 
-			? state.data.find((page: PageData) => page.fields?.slug?.['en-US'] === 'contact')
-			: null;
+		let contactPageData = Array.isArray(state.data) ? state.data.find((page: PageData) => page.fields?.slug?.['en-US'] === 'contact') : null;
 
 		if (contactPageData) {
-			setContactData(contactPageData)
-			setLoading(false)
+			setContactData(contactPageData);
+			setLoading(false);
 		} else {
 			const fetchData = async () => {
-				setLoading(true)
+				setLoading(true);
 				try {
-					const page = await getPage('contact')
+					const page = await getPage('contact');
 					if (page && page.items && page.items.length > 0) {
-						contactPageData = page.items[0]
-						setContactData(contactPageData)
+						contactPageData = page.items[0];
+						setContactData(contactPageData);
 					}
 				} catch (err) {
-					setError('Error fetching contact page data')
-					console.error(err)
+					setError('Error fetching contact page data');
+					console.error(err);
 				} finally {
-					setLoading(false)
+					setLoading(false);
 				}
-			}
-			fetchData()
+			};
+			fetchData();
 		}
-	}, [state.data])
+	}, [state.data]);
 
-	if (loading) return <Loader />
-	if (error) return null
-	if (!contactData) return null
+	if (loading) return <Loader />;
+	if (error) return null;
+	if (!contactData) return null;
 
-	const title: string = getLocalizedField(contactData.fields?.title, language) as string
-	const contentArray = contactData.fields?.content?.['en-US'] || []
-
-	console.log('contentArray', contentArray)
+	const title: string = getLocalizedField(contactData.fields?.title, language) as string;
+	const contentArray = contactData.fields?.content?.['en-US'] || [];
 
 	const renderTextNode = (node: RichTextContent) => {
 		switch (node.nodeType) {
 			case 'text':
-				return node.value
+				return node.value;
 			case 'hyperlink':
-				const data = node.data as NodeData
+				const data = node.data as NodeData;
 				return (
-					<a href={data.uri} target={data.uri?.startsWith('mailto:') ? undefined : '_blank'} rel={data.uri?.startsWith('mailto:') ? undefined : 'noopener noreferrer'}>
+					<a
+						href={data.uri}
+						target={data.uri?.startsWith('mailto:') ? undefined : '_blank'}
+						rel={data.uri?.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+					>
 						{node.content?.map((content: RichTextContent) => renderTextNode(content))}
 					</a>
-				)
+				);
 			default:
-				return null
+				return null;
 		}
-	}
+	};
 
 	return (
 		<section className={`${css.contact} grid space`}>
@@ -73,7 +73,7 @@ const Contact: React.FC = () => {
 			{contentArray.length > 0
 				? contentArray.map((entry: ContactEntry, i: number) => {
 						if (entry.fields?.text) {
-							const textContent = getLocalizedField(entry.fields.text, language) as RichTextDocument
+							const textContent = getLocalizedField(entry.fields.text, language) as RichTextDocument;
 							return (
 								<div className={css.content} key={i}>
 									{textContent?.content.map((paragraph: TextNode | HyperlinkNode, i: number) => (
@@ -83,14 +83,15 @@ const Contact: React.FC = () => {
 											))}
 										</p>
 									))}
+									<p>Temporarily Under Construction</p> {/* remove this*/}
 								</div>
-							)
+							);
 						}
-						return null
-				})
+						return null;
+				  })
 				: null}
 		</section>
-	)
-}
+	);
+};
 
-export default Contact
+export default Contact;
